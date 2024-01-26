@@ -20,3 +20,8 @@
 
 - bash を使用できるイメージとできないイメージがあるので注意。
 - 現状、Debian のバージョン 12（コードネーム：bullseye）を使用。
+
+### React から API リクエストを Django サーバーに転送する設定
+
+- `package.json`に追加した`proxy": "http://django:8000"`で転送。
+- 「django」は docker-compose.yml のコンテナ名。django コンテナの 8000 番ポートに転送。
