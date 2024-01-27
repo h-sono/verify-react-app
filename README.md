@@ -1,3 +1,12 @@
+## ソースの保管場所
+
+- https://github.com/h-sono/verify-react-app
+
+## Docker イメージの保管場所
+
+- https://hub.docker.com/
+- Repositories にある。
+
 ## React
 
 - 起動する：`C:\Users\sonob\github\test-app>npm start`
@@ -25,3 +34,49 @@
 
 - `package.json`に追加した`proxy": "http://django:8000"`で転送。
 - 「django」は docker-compose.yml のコンテナ名。django コンテナの 8000 番ポートに転送。
+
+### イメージの管理方法
+
+- Docker hub を使用。以下イメージのプッシュ手順。
+  - イメージのビルド。イメージ名は`docker image ls`で確認。
+    docker build -t {Docker アカウントのユーザー名}/イメージ名 {Dockerfile を配置しているディレクトリ} -f {ビルド対象の Dockerfile}
+  - イメージのビルドが成功したらそれに対してリポジトリ情報をタグ付けする必要がある。
+    docker tag {Docker アカウントのユーザー名}/イメージ名:{タグ名(任意)} docker.io/{Docker アカウントのユーザー名}/イメージ名:{タグ名(任意)}
+  - Docker Hub にイメージをプッシュする。
+    docker push docker.io/{Docker アカウントのユーザー名}/イメージ名:{タグ名(任意)}
+
+### イメージのプッシュ手順
+
+#### イメージ：test-app-react（サービス名：react）のプッシュ手順
+
+- イメージのビルド：`PS C:\Users\sonob\github\test-app> docker build -t hsonosono/test-app-react . -f Dockerfile.front`
+- タグ付け：`PS C:\Users\sonob\github\test-app> docker tag hsonosono/test-app-react:latest docker.io/hsonosono/test-app-react:latest`
+- Docker Hub へのイメージのプッシュ：`PS C:\Users\sonob\github\test-app> docker push docker.io/hsonosono/test-app-react:latest`
+
+#### イメージ：test-app-django（サービス名：django）のプッシュ手順
+
+- イメージのビルド：`PS C:\Users\sonob\github\test-app> docker build -t hsonosono/test-app-django . -f Dockerfile.app`
+- タグ付け：`PS C:\Users\sonob\github\test-app> docker tag hsonosono/test-app-django:latest docker.io/hsonosono/test-app-django:latest`
+- Docker Hub へのイメージのプッシュ：`PS C:\Users\sonob\github\test-app> docker push docker.io/hsonosono/test-app-react:latest`
+
+### イメージのビルド設定
+
+- `docker-compose.yml`にて Docker Hub で保管しているイメージをビルドする設定にしている。
+  例）
+
+```yml
+image: docker.io/hsonosono/test-app-react:latest
+```
+
+- ローカルに配置している Dockerfile からビルドする場合は以下コメントアウトを解除する。
+  例）
+
+```yml
+# build:
+#   context: .
+#   dockerfile: Dockerfile.front
+```
+
+### Docker で未使用のイメージを削除する方法
+
+- `$ docker image prune`を実行。使用しているイメージは残る。
