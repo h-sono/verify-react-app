@@ -61,22 +61,50 @@
 
 ### イメージのビルド設定
 
-- `docker-compose.yml`にて Docker Hub で保管しているイメージをビルドする設定にしている。
-  例）
+- `docker-compose.yml`にて Docker Hub で保管しているイメージをビルドする場合は以下のようにする。
+- image で Docker Hub で保管しているイメージをプルしてビルドする。
+  ※Docker Hub で管理しているイメージは公開されるので注意。
 
-```yml
-image: docker.io/hsonosono/test-app-react:latest
+````yml
+react:
+  image: docker.io/hsonosono/test-app-react:latest
+  ports:
+    - '3000:3000'
+  depends_on:
+    - django
 ```
 
-- ローカルに配置している Dockerfile からビルドする場合は以下コメントアウトを解除する。
-  例）
+- 通常はローカルに配置している Dockerfile からビルドする。
 
 ```yml
-# build:
-#   context: .
-#   dockerfile: Dockerfile.front
-```
+build:
+  context: .
+  dockerfile: Dockerfile.front
+````
 
 ### Docker で未使用のイメージを削除する方法
 
 - `$ docker image prune`を実行。使用しているイメージは残る。
+
+### Docker Hub にイメージを保管せず、ローカルでビルドした他のイメージを使う方法
+
+- 以下はビルドした react1 のイメージ：test-app-react1 を、react2 でプルして使う場合。
+- react2 の`depends_on`で react1 を指定しておかないと react1 がビルドされる前に react2 がビルドされてしまい、react2 で react1 のイメージをプルすることができず、ビルドが失敗する。
+
+```yml
+react1:
+  build:
+    context: .
+    dockerfile: Dockerfile.front
+  ports:
+    - '3000:3000'
+  depends_on:
+    - django
+
+react2:
+  image: test-app-react1
+  ports:
+    - '3002:3000'
+  depends_on:
+    - react1
+```

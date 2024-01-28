@@ -1,20 +1,18 @@
 version: '3'
 services:
   react:
-    image: docker.io/hsonosono/test-app-react:latest
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile.front
+    build:
+      context: .
+      dockerfile: Dockerfile.front
     ports:
       - '3000:3000'
     depends_on:
       - django
 
   django:
-    image: docker.io/hsonosono/test-app-django:latest
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile.app
+    build:
+      context: .
+      dockerfile: Dockerfile.app
     ports:
       - '8000:8000'
     volumes:
