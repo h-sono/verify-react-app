@@ -1,11 +1,8 @@
 FROM node:20.11.0-bullseye
-
+# React起動時に自動でブラウザを開こうとする。その際にxdg-utilsが必要なのでインストール。
+RUN apt-get update && apt-get install -y xdg-utils
 WORKDIR /app
-
 COPY package*.json ./
-
 RUN npm install
-
 COPY . .
-
 CMD ["npm", "start"]

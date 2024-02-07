@@ -1,14 +1,21 @@
 import React from 'react';
 
-// 仮
-export interface TopTableProps {
+// export interface TopTableProps {
+//   memo: string;
+//   date: string;
+//   button: string;
+// }
+export interface TableListDetails {
   memo: string;
   date: string;
-  button: string;
+  button: string[];
+}
+export interface TableList {
+  tableList: TableListDetails[];
 }
 
-export const TopTable: React.FC<TopTableProps> = (props) => {
-  const { memo, date, button } = props;
+export const TopTable: React.FC<TableList> = (props) => {
+  const { tableList } = props;
   return (
     <table>
       <tr>
@@ -16,11 +23,13 @@ export const TopTable: React.FC<TopTableProps> = (props) => {
         <th>登録日</th>
         <th>更新</th>
       </tr>
-      <tr>
-        <td>{memo}</td>
-        <td>{date}</td>
-        <td>{button}</td>
-      </tr>
+      {tableList.map((item, index)=>(
+        <tr>
+          <td>{item.memo}</td>
+          <td>{item.date}</td>
+          <td>{item.button}</td>
+        </tr>
+      ))}
     </table>
   );
 };
