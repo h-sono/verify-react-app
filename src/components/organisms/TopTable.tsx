@@ -1,14 +1,20 @@
 import React from 'react';
+import { Button } from '../atoms/button.tsx';
+import { INPUT } from '../const/routingPath.tsx';
 
-// 仮
-export interface TopTableProps {
+export interface TableListDetails {
   memo: string;
   date: string;
-  button: string;
+  button: string[];
+}
+export interface TableList {
+  tableList: TableListDetails[];
 }
 
-export const TopTable: React.FC<TopTableProps> = (props) => {
-  const { memo, date, button } = props;
+// 一覧画面に戻ってきたときにセッションストレージをリセットする
+
+export const TopTable: React.FC<TableList> = props => {
+  const { tableList } = props;
   return (
     <table>
       <tr>
@@ -16,11 +22,22 @@ export const TopTable: React.FC<TopTableProps> = (props) => {
         <th>登録日</th>
         <th>更新</th>
       </tr>
-      <tr>
-        <td>{memo}</td>
-        <td>{date}</td>
-        <td>{button}</td>
-      </tr>
+      {tableList.map((item, index) => (
+        <tr key={index}>
+          <td>{item.memo}</td>
+          <td>{item.date}</td>
+          {item.button.map((buttonItem, buttonItemIndex) => (
+            <td>
+              <Button
+                memo={item.memo}
+                date={item.date}
+                pagePath={INPUT}
+                applType={buttonItem}
+              />
+            </td>
+          ))}
+        </tr>
+      ))}
     </table>
   );
 };

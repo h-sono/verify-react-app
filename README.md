@@ -2,6 +2,10 @@
 
 - https://github.com/h-sono/verify-react-app
 
+## トップページのパス
+
+- `http://localhost:3000/top`
+
 ## Docker イメージの保管場所
 
 - https://hub.docker.com/
@@ -97,14 +101,14 @@ react1:
     context: .
     dockerfile: Dockerfile.front
   ports:
-    - '3000:3000'
+    - "3000:3000"
   depends_on:
     - django
 
 react2:
   image: test-app-react1
   ports:
-    - '3002:3000'
+    - "3002:3000"
   depends_on:
     - react1
 ```
