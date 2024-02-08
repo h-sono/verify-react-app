@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // memo、dateのデータが欲しい
 // 新規、変更、解約のコードをセッションストレージに保管してどの申し込みを実行するか判定
@@ -9,20 +9,28 @@ export interface ButtonInfo {
   memo: string;
   date: string;
   pagePath: string;
-  // 引数、返却値なし。
-  // handleButtonClick?: () => void;
+  // 申し込み種別：N(New),M(Modify),C(Cancel)
+  applType: string;
 }
 
-export const Button: React.FC<ButtonInfo> = (props) => {
-  const { memo, date } = props;
+export const Button: React.FC<ButtonInfo> = props => {
+  const { memo, date, pagePath, applType } = props;
   // const [buttonClicked, setButtonClicked] = React.useState<boolean>(false);
   const navigate = useNavigate();
   // ボタンを押下するときのアクション。
   const handleButtonClick = () => {
-    // セッションストレージに値を保存。
-    sessionStorage.setItem("TopTableSelectData", "hoge");
+    // セッションストレージに値を保存
+    // sessionStorage.setItem("TopTableSelectData", "hoge");
+    sessionStorage.setItem(
+      'TopTableSelectData',
+      JSON.stringify({
+        memo: memo,
+        date: date,
+        applType: applType
+      })
+    );
     // ページを指定。
-    navigate("/input");
+    navigate(pagePath);
     // ボタンを押下したしたときにtrueに切り替え。
     // setButtonClicked(true);
   };

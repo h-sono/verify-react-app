@@ -1,6 +1,6 @@
-import React from "react";
-import { Button } from "../atoms/button.tsx";
-import { INPUT } from "../const/routingPath.tsx";
+import React from 'react';
+import { Button } from '../atoms/button.tsx';
+import { INPUT } from '../const/routingPath.tsx';
 
 export interface TableListDetails {
   memo: string;
@@ -13,7 +13,7 @@ export interface TableList {
 
 // 一覧画面に戻ってきたときにセッションストレージをリセットする
 
-export const TopTable: React.FC<TableList> = (props) => {
+export const TopTable: React.FC<TableList> = props => {
   const { tableList } = props;
   return (
     <table>
@@ -28,7 +28,12 @@ export const TopTable: React.FC<TableList> = (props) => {
           <td>{item.date}</td>
           {item.button.map((buttonItem, buttonItemIndex) => (
             <td>
-              <Button memo={item.memo} date={item.date} pagePath={INPUT} />
+              <Button
+                memo={item.memo}
+                date={item.date}
+                pagePath={INPUT}
+                applType={buttonItem}
+              />
             </td>
           ))}
         </tr>
