@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button } from '../atoms/button.tsx';
-import { INPUT } from '../const/routingPath.tsx';
+import { UpdateButton } from '../atoms/UpdateButton.tsx';
+import { INPUT } from '../const/RoutingPath.tsx';
 
 export interface TableListDetails {
-  memo: string;
+  todo: string;
   date: string;
   button: string[];
 }
@@ -18,18 +18,18 @@ export const TopTable: React.FC<TableList> = props => {
   return (
     <table>
       <tr>
-        <th>メモ内容</th>
+        <th>Todo</th>
         <th>登録日</th>
         <th>更新</th>
       </tr>
       {tableList.map((item, index) => (
         <tr key={index}>
-          <td>{item.memo}</td>
+          <td>{item.todo}</td>
           <td>{item.date}</td>
           {item.button.map((buttonItem, buttonItemIndex) => (
             <td>
-              <Button
-                memo={item.memo}
+              <UpdateButton
+                todo={item.todo}
                 date={item.date}
                 pagePath={INPUT}
                 applType={buttonItem}
