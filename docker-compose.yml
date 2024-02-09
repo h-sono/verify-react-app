@@ -1,11 +1,11 @@
-version: "3"
+version: '3'
 services:
   react:
     build:
       context: .
       dockerfile: Dockerfile.front
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - .:/app # 変更をリアルタイムでマウントできるようルートディレクトリをappへマウント。
     depends_on:
@@ -16,17 +16,17 @@ services:
       context: .
       dockerfile: Dockerfile.app
     ports:
-      - "8000:8000"
+      - '8000:8000'
     volumes:
-      - ./testapp:/app
+      - ./todo_app:/app
     depends_on:
       - db
 
   db:
     image: postgres:latest
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: todoapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 1234
     ports:
-      - "5432:5432"
+      - '5432:5432'

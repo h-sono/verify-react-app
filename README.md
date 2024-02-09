@@ -6,6 +6,11 @@
 
 - `http://localhost:3000/top`
 
+## Django REST Flamework 側のパス
+
+- `http://localhost:8000/api/`の後に API のパスを入れる。
+  ※例：`http://localhost:8000/api/top_list/`
+
 ## Docker イメージの保管場所
 
 - https://hub.docker.com/
@@ -101,14 +106,14 @@ react1:
     context: .
     dockerfile: Dockerfile.front
   ports:
-    - "3000:3000"
+    - '3000:3000'
   depends_on:
     - django
 
 react2:
   image: test-app-react1
   ports:
-    - "3002:3000"
+    - '3002:3000'
   depends_on:
     - react1
 ```
