@@ -1,6 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { INPUT } from '../const/RoutingPath.tsx';
 import { InputTextField } from '../molecules/InputTextField.tsx';
 import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
@@ -9,12 +7,12 @@ export interface ConfirmPageViewProps {
   confirmItemNameList: ResistrationTypeDisplayProps;
   todoForm: SessionStorageFormDataProps;
   handleSubmit: () => void;
+  handlePageBack: () => void;
 }
 
 // 確認画面のビューコンポーネント
 export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
-  const { confirmItemNameList, todoForm } = props;
-  const navigate = useNavigate();
+  const { confirmItemNameList, todoForm, handleSubmit, handlePageBack } = props;
 
   return (
     <div>
@@ -28,13 +26,7 @@ export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
       />
       <br />
       <button>登録</button>
-      <button
-        onClick={() => {
-          navigate(INPUT);
-        }}
-      >
-        戻る
-      </button>
+      <button onClick={handlePageBack}>戻る</button>
     </div>
   );
 };

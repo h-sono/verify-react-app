@@ -1,13 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
 import { TodoForm } from '../const/Form.tsx';
 import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
-import { New, Modify } from '../const/RegistrationType.tsx';
+import { New, Modify, Delete } from '../const/RegistrationType.tsx';
 import { ConfirmPageView } from '../organisms/ConfirmPageView.tsx';
+import { TOP, INPUT } from '../const/RoutingPath.tsx';
 
 // 確認画面のロジックコンポーネント
 export const ConfirmPage: React.FC = () => {
+  const navigate = useNavigate();
+
   // セッションストレージに保存されているフォームデータを管理。
   const [storageTodoFormData, setStorageTodoFormData] = React.useState<SessionStorageFormDataProps>({
     todo: '',
@@ -45,6 +49,12 @@ export const ConfirmPage: React.FC = () => {
         todoDisplay: '■ Todo内容変更確認'
       };
       break;
+    case Delete:
+      confirmItemName = {
+        title: '削除確認画面',
+        todoDisplay: '■ Todo内容削除確認'
+      };
+      break;
     default:
       confirmItemName = {
         title: '確認画面',
@@ -56,7 +66,22 @@ export const ConfirmPage: React.FC = () => {
     console.log('登録API呼び出しを定義');
   };
 
+  // 戻るボタン押下時。
+  const handlePageBack = () => {
+    // 削除以外は入力画面に戻り、削除の場合はトップ画面に戻る。
+    if (storageTodoFormData.applType !== Delete) {
+      navigate(INPUT);
+    } else {
+      navigate(TOP);
+    }
+  };
+
   return (
-    <ConfirmPageView confirmItemNameList={confirmItemName} todoForm={storageTodoFormData} handleSubmit={handleSubmit} />
+    <ConfirmPageView
+      confirmItemNameList={confirmItemName}
+      todoForm={storageTodoFormData}
+      handleSubmit={handleSubmit}
+      handlePageBack={handlePageBack}
+    />
   );
 };

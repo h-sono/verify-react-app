@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { TodoForm } from '../const/Form.tsx';
 import { SessionStorageSet } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeList } from '../const/RegistrationType.tsx';
+import { Delete } from '../const/RegistrationType.tsx';
+import { CONFIRM } from '../const/RoutingPath.tsx';
 
 export interface UpdateButtonInfo {
   todo?: string;
@@ -34,8 +36,17 @@ export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
       applType: applType
     });
     // ボタンを押下したときに遷移するページを指定。
-    navigate(pagePath);
+    if (applType !== Delete) {
+      navigate(pagePath);
+    } else {
+      // 削除時は確認画面に遷移。
+      navigate(CONFIRM);
+    }
   };
 
-  return <button onClick={handleButtonClick}>{applTypeName}</button>;
+  return (
+    <div>
+      <button onClick={handleButtonClick}>{applTypeName}</button>
+    </div>
+  );
 };

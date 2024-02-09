@@ -5,6 +5,7 @@ import { TodoForm } from '../const/Form.tsx';
 import { SessionStorageSet, SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
 import { InputPageView } from '../organisms/InputPageView.tsx';
 import { New, Modify } from '../const/RegistrationType.tsx';
+import { TOP } from '../const/RoutingPath.tsx';
 
 export interface SessionStorageFormDataProps {
   todo?: string;
@@ -45,7 +46,7 @@ export const InputPage: React.FC = () => {
   };
 
   // 確認ボタンが押下された時に実行。
-  const handleSubmit = () => {
+  const handleConirm = () => {
     // セッションストレージに入力したフォームの値をセット。
     SessionStorageSet(TodoForm, {
       todo: todoForm.todo,
@@ -54,6 +55,11 @@ export const InputPage: React.FC = () => {
     });
     // 確認画面へ遷移。
     navigate(CONFIRM);
+  };
+
+  // 戻るボタン押下時にトップ画面へ遷移。
+  const handlePageBack = () => {
+    navigate(TOP);
   };
 
   // 登録種別によって入力画面の表示内容を切り替える。
@@ -90,7 +96,8 @@ export const InputPage: React.FC = () => {
       inputItemNameList={inputItemName}
       todoForm={todoForm}
       handleInputChange={handleInputChange}
-      handleSubmit={handleSubmit}
+      handleConirm={handleConirm}
+      handlePageBack={handlePageBack}
     />
   );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TOP } from '../const/RoutingPath.tsx';
 import { InputTextField } from '../molecules/InputTextField.tsx';
 import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
@@ -9,12 +8,13 @@ export interface InputPageViewProps {
   inputItemNameList: ResistrationTypeDisplayProps;
   todoForm: SessionStorageFormDataProps;
   handleInputChange: (e: any) => void;
-  handleSubmit: () => void;
+  handleConirm: () => void;
+  handlePageBack: () => void;
 }
 
 // 入力画面のビューコンポーネント
 export const InputPageView: React.FC<InputPageViewProps> = props => {
-  const { inputItemNameList, todoForm, handleInputChange, handleSubmit } = props;
+  const { inputItemNameList, todoForm, handleInputChange, handleConirm, handlePageBack } = props;
   const navigate = useNavigate();
 
   return (
@@ -28,14 +28,8 @@ export const InputPageView: React.FC<InputPageViewProps> = props => {
         inputItemName={inputItemNameList.todoDisplay}
         handleInputChange={handleInputChange}
       />
-      <button onClick={handleSubmit}>確認</button>
-      <button
-        onClick={() => {
-          navigate(TOP);
-        }}
-      >
-        戻る
-      </button>
+      <button onClick={handleConirm}>確認</button>
+      <button onClick={handlePageBack}>戻る</button>
     </div>
   );
 };
