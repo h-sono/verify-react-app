@@ -11,9 +11,8 @@ export interface TableList {
   tableList: TableListDetails[];
 }
 
-// 一覧画面に戻ってきたときにセッションストレージをリセットする
-
-export const TopTable: React.FC<TableList> = props => {
+// 一覧画面のビューコンポーネント
+export const TopPageView: React.FC<TableList> = props => {
   const { tableList } = props;
   return (
     <table>
@@ -28,12 +27,7 @@ export const TopTable: React.FC<TableList> = props => {
           <td>{item.date}</td>
           {item.button.map((buttonItem, buttonItemIndex) => (
             <td>
-              <UpdateButton
-                todo={item.todo}
-                date={item.date}
-                pagePath={INPUT}
-                applType={buttonItem}
-              />
+              <UpdateButton todo={item.todo} date={item.date} pagePath={INPUT} applType={buttonItem} />
             </td>
           ))}
         </tr>

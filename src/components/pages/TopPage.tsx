@@ -1,7 +1,8 @@
 import React from 'react';
-import { TopTable } from '../organisms/TopTable.tsx';
+import { TopPageView } from '../organisms/TopPageView.tsx';
 import { SessionStorageAllClear } from '../utils/SessionStorageUtils.tsx';
 
+// 一覧画面のロジックコンポーネント
 export const TopPage: React.FC = () => {
   // TODO:一覧取得API呼び出し
   // TODO:一覧取得API呼び出したと仮定
@@ -12,5 +13,5 @@ export const TopPage: React.FC = () => {
   ];
   // セッションストレージをクリアする
   SessionStorageAllClear();
-  return <TopTable tableList={test_list} />;
+  return <TopPageView tableList={test_list} />;
 };

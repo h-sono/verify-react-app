@@ -1,36 +1,41 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SelectTodoForm } from '../const/Form.tsx';
+import { TodoForm } from '../const/Form.tsx';
 import { SessionStorageSet } from '../utils/SessionStorageUtils.tsx';
+import { ResistrationTypeList } from '../const/RegistrationType.tsx';
 
 export interface UpdateButtonInfo {
-  todo: string;
-  date: string;
+  todo?: string;
+  date?: string;
   pagePath: string;
-  // 申し込み種別：N(New：新規登録),M(Modify：変更登録),D(Delete：削除)
   applType: string;
 }
 
 export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
-  const { todo, date, pagePath, applType } = props;
+  const { todo = '', date = '', pagePath, applType } = props;
   const navigate = useNavigate();
 
-  // 変更or削除ボタンを押下するときのアクション。
+  // 登録種別に対応した登録種別名を管理。
+  const [applTypeName, setApplTypeName] = React.useState<string>('');
+
+  // 取得した登録種別名をセット。
+  React.useEffect(() => {
+    if (ResistrationTypeList[applType] !== undefined) {
+      setApplTypeName(ResistrationTypeList[applType]);
+    }
+  }, []);
+
+  // 新規 or 変更 or 削除ボタンを押下するときのアクション。
   const handleButtonClick = () => {
     // セッションストレージに選択したTodoの情報を保存。
-    SessionStorageSet(SelectTodoForm, {
+    SessionStorageSet(TodoForm, {
       todo: todo,
       date: date,
       applType: applType
     });
     // ボタンを押下したときに遷移するページを指定。
     navigate(pagePath);
-    // ボタンを押下したしたときにtrueに切り替え。
   };
 
-  return (
-    <button onClick={handleButtonClick}>
-      {applType === 'M' ? '変更' : '削除'}
-    </button>
-  );
+  return <button onClick={handleButtonClick}>{applTypeName}</button>;
 };

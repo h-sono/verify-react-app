@@ -1,9 +1,9 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { TopPage } from "../pages/TopPage.tsx";
-import { InputPage } from "../pages/InputPage.tsx";
-import { ConfirmPage } from "../pages/ConfirmPage.tsx";
-import { TOP, INPUT, CONFIRM } from "../const/routingPath.tsx";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { TopPage } from '../pages/TopPage.tsx';
+import { InputPage } from '../pages/InputPage.tsx';
+import { ConfirmPage } from '../pages/ConfirmPage.tsx';
+import { TOP, INPUT, CONFIRM } from '../const/RoutingPath.tsx';
 
 export const Routing: React.FC = () => {
   return (

@@ -1,56 +1,62 @@
 import React from 'react';
-import { TextField } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { INPUT } from '../const/RoutingPath.tsx';
+import { SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
+import { TodoForm } from '../const/Form.tsx';
+import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
+import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
+import { New, Modify } from '../const/RegistrationType.tsx';
+import { ConfirmPageView } from '../organisms/ConfirmPageView.tsx';
 
-export interface SessionsetStorageFormData {
-  todo: string;
-  date: string;
-  applType: string;
-}
-
-// 確認画面
+// 確認画面のロジックコンポーネント
 export const ConfirmPage: React.FC = () => {
-  const navigate = useNavigate();
-
-  // セッションストレージのフォームデータを管理。
-  const [storageFormData, setStorageFormData] =
-    React.useState<SessionsetStorageFormData>({
-      todo: '',
-      date: '',
-      applType: ''
-    });
+  // セッションストレージに保存されているフォームデータを管理。
+  const [storageTodoFormData, setStorageTodoFormData] = React.useState<SessionStorageFormDataProps>({
+    todo: '',
+    date: '',
+    applType: ''
+  });
 
   // 確認ページ描画時にセッションストレージから値を取得。
   React.useEffect(() => {
-    const getFormDataStr = sessionStorage.getItem('SelectTodoForm');
-    if (getFormDataStr) {
-      const getFormData = JSON.parse(getFormDataStr);
-      setStorageFormData({
+    const getFormData: SessionStorageFormDataProps = SessionStorageItemGet(TodoForm);
+    if (getFormData) {
+      setStorageTodoFormData({
         todo: getFormData.todo,
         date: getFormData.date,
         applType: getFormData.applType
       });
     }
   }, []);
-  console.log(storageFormData);
-  const handleClick = () => {
-    navigate(INPUT);
+
+  // 登録種別によって確認画面の表示内容を切り替える。
+  let confirmItemName: ResistrationTypeDisplayProps = {
+    title: '',
+    todoDisplay: ''
+  };
+  switch (storageTodoFormData.applType) {
+    case New:
+      confirmItemName = {
+        title: '新規確認画面',
+        todoDisplay: '■ Todo内容新規確認'
+      };
+      break;
+    case Modify:
+      confirmItemName = {
+        title: '変更確認画面',
+        todoDisplay: '■ Todo内容変更確認'
+      };
+      break;
+    default:
+      confirmItemName = {
+        title: '確認画面',
+        todoDisplay: '■ Todo内容確認'
+      };
+  }
+
+  const handleSubmit = () => {
+    console.log('登録API呼び出しを定義');
   };
 
   return (
-    <div>
-      <p>確認ページ</p>
-      <label>■ Todo確認</label>
-      <br />
-      <TextField
-        id='todo'
-        value={storageFormData.todo}
-        InputProps={{ readOnly: true }}
-      />
-      <br />
-      <button>登録</button>
-      <button onClick={handleClick}>戻る</button>
-    </div>
+    <ConfirmPageView confirmItemNameList={confirmItemName} todoForm={storageTodoFormData} handleSubmit={handleSubmit} />
   );
 };

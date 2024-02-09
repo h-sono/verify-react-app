@@ -1,87 +1,96 @@
 import React from 'react';
-import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { TOP, CONFIRM } from '../const/RoutingPath.tsx';
-import { SelectTodoForm } from '../const/Form.tsx';
+import { CONFIRM } from '../const/RoutingPath.tsx';
+import { TodoForm } from '../const/Form.tsx';
+import { SessionStorageSet, SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
+import { InputPageView } from '../organisms/InputPageView.tsx';
+import { New, Modify } from '../const/RegistrationType.tsx';
 
-export interface FormState {
-  todo: string;
+export interface SessionStorageFormDataProps {
+  todo?: string;
+  date?: string;
+  applType?: string;
 }
 
-export interface SessionsetStorageFormData {
-  todo: string;
-  date: string;
-  applType: string;
+export interface ResistrationTypeDisplayProps {
+  title: string;
+  todoDisplay: string;
+  todoPlaceholder?: string;
 }
 
-// 入力画面
+// 入力画面のロジックコンポーネント
 export const InputPage: React.FC = () => {
   const navigate = useNavigate();
 
+  // useState一覧
   // 入力フォームの入力状態を管理。
-  const [inputForm, setInputForm] = React.useState<FormState>({ todo: '' });
-  // セッションストレージのフォームデータを管理。
-  const [storageFormData, setStorageFormData] =
-    React.useState<SessionsetStorageFormData>({
-      todo: '',
-      date: '',
-      applType: ''
-    });
+  const [todoForm, setTodoForm] = React.useState<SessionStorageFormDataProps>({
+    todo: '',
+    date: '',
+    applType: ''
+  });
 
   // 入力ページ描画時にセッションストレージから値を取得。
   React.useEffect(() => {
-    const getFormDataStr = sessionStorage.getItem('SelectTodoForm');
-    if (getFormDataStr) {
-      const getFormData = JSON.parse(getFormDataStr);
-      setStorageFormData({
-        todo: getFormData.todo,
-        date: getFormData.date,
-        applType: getFormData.applType
-      });
-      // セッションストレージに保存されているtodoを入力フォームにセット。
-      setInputForm({ todo: getFormData.todo });
+    const getFormData: SessionStorageFormDataProps = SessionStorageItemGet(TodoForm);
+    // セッションストレージの値を入力フォームにセット。
+    if (getFormData) {
+      setTodoForm({ todo: getFormData.todo, date: getFormData.date, applType: getFormData.applType });
     }
   }, []);
 
   // 入力フォームの値が変更された時に実行。
   const handleInputChange = e => {
-    setInputForm({ todo: e.target.value });
+    setTodoForm({ todo: e.target.value, date: todoForm.date, applType: todoForm.applType });
   };
 
-  // フォームが送信された時に実行。
+  // 確認ボタンが押下された時に実行。
   const handleSubmit = () => {
+    // セッションストレージに入力したフォームの値をセット。
+    SessionStorageSet(TodoForm, {
+      todo: todoForm.todo,
+      date: todoForm.date,
+      applType: todoForm.applType
+    });
     // 確認画面へ遷移。
     navigate(CONFIRM);
-    // セッションストレージに入力したフォームの値をセット。
-    sessionStorage.setItem(
-      'SelectTodoForm',
-      JSON.stringify({
-        todo: inputForm.todo,
-        date: storageFormData.date,
-        applType: storageFormData.applType
-      })
-    );
   };
 
-  // 戻るボタンが押下されたときに実行。
-  const pageBack = () => {
-    navigate(TOP);
+  // 登録種別によって入力画面の表示内容を切り替える。
+  let inputItemName: ResistrationTypeDisplayProps = {
+    title: '',
+    todoDisplay: '',
+    todoPlaceholder: ''
   };
+  switch (todoForm.applType) {
+    case New:
+      inputItemName = {
+        title: '新規入力画面',
+        todoDisplay: '■ Todo内容新規入力',
+        todoPlaceholder: 'Todo内容を入力してください'
+      };
+      break;
+    case Modify:
+      inputItemName = {
+        title: '変更入力画面',
+        todoDisplay: '■ Todo内容変更入力',
+        todoPlaceholder: 'Todo内容を変更してください'
+      };
+      break;
+    default:
+      inputItemName = {
+        title: '入力画面',
+        todoDisplay: '■ Todo内容入力',
+        todoPlaceholder: 'Todo内容を入力してください'
+      };
+  }
 
   return (
-    <div>
-      <p>入力ページ</p>
-      <label>■ Todo入力</label>
-      <br />
-      <TextField
-        id='todo'
-        value={inputForm.todo}
-        placeholder='todo内容を入力してください'
-        onChange={handleInputChange}
-      />
-      <br />
-      <button onClick={handleSubmit}>確認</button>
-      <button onClick={pageBack}>戻る</button>
-    </div>
+    <InputPageView
+      inputItemNameList={inputItemName}
+      todoForm={todoForm}
+      handleInputChange={handleInputChange}
+      handleSubmit={handleSubmit}
+    />
   );
 };
