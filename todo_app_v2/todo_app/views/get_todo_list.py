@@ -6,4 +6,4 @@ from rest_framework.decorators import api_view
 @api_view(["GET"])
 def get(request):
     """ Todo一覧取得 """
-    return Response({"top_list": {"test": "テスト"}})
+    return Response({"top_list": {"test": "テストAPIレスポンス2"}})

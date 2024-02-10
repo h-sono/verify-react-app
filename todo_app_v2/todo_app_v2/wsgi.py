@@ -1,5 +1,5 @@
 """
-WSGI config for testapp project.
+WSGI config for todo_app_v2 project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testapp.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'todo_app_v2.settings')
 
 application = get_wsgi_application()

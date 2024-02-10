@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("top_list/", views.top_list.get, name="top_list"),
+    path("todo_list/", views.get_todo_list.get, name="todo_list"),
 ]

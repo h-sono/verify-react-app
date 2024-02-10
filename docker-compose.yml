@@ -18,15 +18,15 @@ services:
     ports:
       - '8000:8000'
     volumes:
-      - ./todo_app:/app
+      - ./todo_app_v2:/app
     depends_on:
       - db
 
   db:
-    image: postgres:latest
+    image: postgres:bullseye
     environment:
-      POSTGRES_DB: todoapp
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: todo_app_db
+      POSTGRES_USER: todo_app_user
+      POSTGRES_PASSWORD: testpass1234
     ports:
       - '5432:5432'
