@@ -20,5 +20,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-*.pyc
 __pycache__/
+
+/testenv
+/todo_app_env
