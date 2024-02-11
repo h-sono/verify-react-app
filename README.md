@@ -4,7 +4,7 @@
 
 ## トップページのパス
 
-- `http://localhost:3000/top`
+- `http://localhost:3000/todo`
 
 ## Django REST Flamework 側のパス
 

@@ -3,7 +3,8 @@ services:
   react:
     build:
       context: .
-      dockerfile: Dockerfile.front
+      dockerfile: Dockerfile
+      target: react-build
     ports:
       - '3000:3000'
     volumes:
@@ -14,13 +15,25 @@ services:
   django:
     build:
       context: .
-      dockerfile: Dockerfile.app
+      dockerfile: Dockerfile
+      target: django-build
     ports:
       - '8000:8000'
     volumes:
       - ./todo_app_v2:/app
     depends_on:
       - db
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: nginx-build
+    ports:
+      - "80:80"
+    depends_on:
+      - react
+      - django
 
   db:
     image: postgres:bullseye

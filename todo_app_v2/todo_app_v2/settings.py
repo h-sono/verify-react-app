@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-k*@&99ef#8ddf8l)r0#k$9j!^#5^&+0caz@8u#or2e8t3wq!n5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# nginx.confでdjango:8000にリクエストを転送している。proxy_passにhttp://django:8000;
+# を指定しているが許可しないとdjangoにアクセスできないため許可している。
+ALLOWED_HOSTS = ['django']
 
 
 # Application definition
@@ -133,3 +135,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = []

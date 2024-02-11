@@ -6,7 +6,7 @@ import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
 import { New, Modify, Delete } from '../const/RegistrationType.tsx';
 import { ConfirmPageView } from '../organisms/ConfirmPageView.tsx';
-import { TOP, INPUT } from '../const/RoutingPath.tsx';
+import { TODO, INPUT } from '../const/RoutingPath.tsx';
 
 // 確認画面のロジックコンポーネント
 export const ConfirmPage: React.FC = () => {
@@ -72,7 +72,7 @@ export const ConfirmPage: React.FC = () => {
     if (storageTodoFormData.applType !== Delete) {
       navigate(INPUT);
     } else {
-      navigate(TOP);
+      navigate(TODO);
     }
   };
 
