@@ -3,10 +3,10 @@ services:
   react:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.front
       target: react-build
     ports:
-      - '3000:3000'
+      - '3001:3000'
     volumes:
       - .:/app # 変更をリアルタイムでマウントできるようルートディレクトリをappへマウント。
     depends_on:
@@ -15,8 +15,7 @@ services:
   django:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: django-build
+      dockerfile: Dockerfile.app
     ports:
       - '8000:8000'
     volumes:
@@ -27,10 +26,10 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.front
       target: nginx-build
     ports:
-      - "80:80"
+      - '3000:80'
     depends_on:
       - react
       - django

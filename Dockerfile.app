@@ -3,7 +3,8 @@ RUN apt-get update \
     && apt-get install -y libpq-dev gcc \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-COPY ./requirements.txt .
+# ワークディレクトリapp配下にtodo_app_v2配下のソースをコピー。
+COPY ./todo_app_v2 .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+# Djangoの起動コマンド。
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

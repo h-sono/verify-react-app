@@ -22,13 +22,13 @@
 
 ## Django
 
-- 仮想環境に切り替える(Windows)：`C:\Users\sonob\github\test-app>`で`testenv\Scripts\activate`
-- 仮想環境に切り替える(Ubuntu)：`C:\Users\sonob\github\test-app>`で`source ./todo_app_env/bin/activate`
+- 仮想環境に切り替える(Ubuntu)：`C:\Users\sonob\github\verify-react-app>`で`source todoappenv/bin/activate`
 - 起動する：`(testenv) C:\Users\sonob\github\test-app\testapp>python manage.py runserver`
-※settingsのlocal.pyを読み取る場合：`python manage.py runserver --settings=todo_app_v2.settings.local`
+  ※settings の local.py を読み取る場合：`python manage.py runserver --settings=todo_app_v2.settings.local`
 - パッケージを requirements.txt に出力：`pip freeze > requirements.txt`
-- パッケージをrequirements.txtからインストール：`pip install -r requirements.txt`
+- パッケージを requirements.txt からインストール：`pip install -r requirements.txt`
 - `todo_app`配下の`models.py`でマイグレーションファイルを生成：`python manage.py makemigrations todo_app`
+  ※PostgreSQl の認証ができない場合は`docker-compose down --rmi all`でイメージ、コンテナ、ボリュームをすべて削除して再度`docker-compose up --build`でビルドしなおす。docker 起動中にパスワードを変更したり、古いパスワードのイメージやコンテナを使っていると認証エラーが発生することがある。
 - `todo_app/migrations/`配下のマイグレーションファイルでマイグレートする：`python manage.py migrate todo_app`
 
 ## Docker
@@ -123,7 +123,12 @@ react2:
     - react1
 ```
 
-## dbコンテナ
-- `POSTGRES_DB`、`POSTGRES_USER`、`POSTGRES_PASSWORD`はDjangoのsettingsの`DATABASES`の設定値と統一する。
-- Django側でマイグレーションされてDBが生成されてからPostgreSQLに接続する。
-- `docker-compose exec db bash`でdbコンテナに接続してから、`psql -U todo_app_user -d todo_app_db`でPostgreSQLに接続する。
+## db コンテナ
+
+- `POSTGRES_DB`、`POSTGRES_USER`、`POSTGRES_PASSWORD`は Django の settings の`DATABASES`の設定値と統一する。
+- Django 側でマイグレーションされて DB が生成されてから PostgreSQL に接続する。
+- `docker-compose exec db bash`で db コンテナに接続してから、`psql -U todo_app_user -d todo_app_db`で PostgreSQL に接続する。
+
+### Docker イメージのサイズが大きくならないよう注意すること
+
+- `COPY . .`のようにルートディレクトリのソースすべてをワークディレクトリにコピーするとイメージサイズが大きくなる。必要なディレクトリだけコピーするようにする。

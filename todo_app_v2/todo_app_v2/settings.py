@@ -27,7 +27,7 @@ DEBUG = True
 
 # nginx.confでdjango:8000にリクエストを転送している。proxy_passにhttp://django:8000;
 # を指定しているが許可しないとdjangoにアクセスできないため許可している。
-ALLOWED_HOSTS = ['django']
+ALLOWED_HOSTS = ['django', 'http://localhost:8000']
 
 
 # Application definition
@@ -136,4 +136,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = []
+# CSRF_TRUSTED_ORIGINS = ["http://localhost:8000"]
