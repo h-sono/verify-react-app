@@ -16,6 +16,10 @@ COPY public ./public
 RUN mkdir src
 # ルートディレクトリのsrcディレクトリをapp配下のsrcディレクトリ配下にコピー。
 COPY src ./src
+# app配下にbuildディレクトリ作成。
+RUN mkdir build
+# ルートディレクトリのpublicディレクトリをapp配下のpublicディレクトリ配下にコピー。
+COPY build ./build
 # Reactの起動コマンド。
 # CMD ["npm", "start"]
 CMD ["npm", "run", "build"]
@@ -24,7 +28,7 @@ FROM nginx:stable-alpine3.17-slim AS nginx-build
 # ワークディレクトリapp配下のpublic内にあるindex.htmlを
 # /usr/share/nginx/html(Nginxでindex.htmlを読み込む際に使用)配下にコピー。
 # COPY --from=react-build /app/public/index.html /usr/share/nginx/html
-COPY --from=react-build /app/src/webpack/ /usr/share/nginx/html/
+COPY --from=react-build /app/build /usr/share/nginx/html/
 # ルートディレクトリのnginx.conf(Nginx設定ファイル)をdefault.confにコピー。
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # bashをインストール(alpineに標準でインストールされていないため)。bashを実行できるようにするため。

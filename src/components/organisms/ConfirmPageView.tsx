@@ -6,13 +6,13 @@ import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
 export interface ConfirmPageViewProps {
   confirmItemNameList: ResistrationTypeDisplayProps;
   todoForm: SessionStorageFormDataProps;
-  handleSubmit: () => void;
+  // handleSubmit: () => void;
   handlePageBack: () => void;
 }
 
 // 確認画面のビューコンポーネント
 export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
-  const { confirmItemNameList, todoForm, handleSubmit, handlePageBack } = props;
+  const { confirmItemNameList, todoForm, handlePageBack } = props;
 
   return (
     <div>

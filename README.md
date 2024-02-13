@@ -132,3 +132,8 @@ react2:
 ### Docker イメージのサイズが大きくならないよう注意すること
 
 - `COPY . .`のようにルートディレクトリのソースすべてをワークディレクトリにコピーするとイメージサイズが大きくなる。必要なディレクトリだけコピーするようにする。
+
+
+### Docker起動時に以下エラーが発生した場合の対応
+- `sh: 1: react-scripts: Permission denied`
+⇒react-scriptsに実行権限を与える。verify-react-appディレクトリで`chmod +x node_modules/.bin/react-scripts`実行。
