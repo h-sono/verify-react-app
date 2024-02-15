@@ -5,7 +5,8 @@ import { TodoForm } from '../const/Form.tsx';
 import { SessionStorageSet, SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
 import { InputPageView } from '../organisms/InputPageView.tsx';
 import { New, Modify } from '../const/RegistrationType.tsx';
-import { TOP } from '../const/RoutingPath.tsx';
+import { TODO } from '../const/RoutingPath.tsx';
+import { getTodoList } from '../callApi/GetTodoList.tsx';
 
 export interface SessionStorageFormDataProps {
   todo?: string;
@@ -59,7 +60,7 @@ export const InputPage: React.FC = () => {
 
   // 戻るボタン押下時にトップ画面へ遷移。
   const handlePageBack = () => {
-    navigate(TOP);
+    navigate(TODO);
   };
 
   // 登録種別によって入力画面の表示内容を切り替える。
@@ -90,6 +91,17 @@ export const InputPage: React.FC = () => {
         todoPlaceholder: 'Todo内容を入力してください'
       };
   }
+
+  // TODO:API呼び出し
+  const [ resData, setResData ] = React.useState<object>({});
+  React.useEffect(() => {
+    // view_test.py呼び出し
+    setResData(getTodoList());
+  }, []);
+  console.log('API返却値2---------------------')
+  console.log(resData)
+  console.log('API返却値2---------------------')
+
 
   return (
     <InputPageView

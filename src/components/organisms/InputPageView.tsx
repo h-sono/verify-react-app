@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { InputTextField } from '../molecules/InputTextField.tsx';
 import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
@@ -15,7 +14,6 @@ export interface InputPageViewProps {
 // 入力画面のビューコンポーネント
 export const InputPageView: React.FC<InputPageViewProps> = props => {
   const { inputItemNameList, todoForm, handleInputChange, handleConirm, handlePageBack } = props;
-  const navigate = useNavigate();
 
   return (
     <div>

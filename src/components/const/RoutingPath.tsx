@@ -1,3 +1,3 @@
-export const TOP = "/top";
-export const INPUT = "/input";
-export const CONFIRM = "/confirm";
+export const TODO = "/todo/";
+export const INPUT = "/todo/input";
+export const CONFIRM = "/todo/confirm";

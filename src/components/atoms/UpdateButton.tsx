@@ -25,7 +25,7 @@ export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
     if (ResistrationTypeList[applType] !== undefined) {
       setApplTypeName(ResistrationTypeList[applType]);
     }
-  }, []);
+  }, [applType]);
 
   // 新規 or 変更 or 削除ボタンを押下するときのアクション。
   const handleButtonClick = () => {
