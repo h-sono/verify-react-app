@@ -1,3 +1,4 @@
+// ※npm run buildでwebpackしているため使用していない。npm run webpack(カスタムwebpack)する際に使用する。
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -10,10 +11,11 @@ const mode = {
 
 module.exports = {
   mode: mode,
-  entry: path.join(__dirname, 'src', 'index.tsx'),
+  // 絶対パスを指定。プロジェクトのルートディレクトリ：__dirnameの後に続ける。
+  entry: path.join(__dirname, 'src/index.tsx'),
   output: {
-    path: path.join(__dirname, 'src/webpack/'),
-    filename: 'bundle-by-webpack.js'
+    path: path.join(__dirname, 'src/webpack/')
+    // filename: 'bundle-by-webpack.js'
   },
   module: {
     rules: [
@@ -22,8 +24,13 @@ module.exports = {
         test: /\.(js|tsx)$/,
         // 除外するファイル・ディレクトリを指定。
         exclude: /node_modules/,
-        // 使用するトランスパイラを指定。
-        use: 'babel-loader'
+        // 使用するコンパイラを指定。
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript']
+          }
+        }
       },
       {
         // cssファイルをwebpackの対象とする。

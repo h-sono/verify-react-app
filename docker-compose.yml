@@ -1,14 +1,11 @@
 version: '3'
 services:
-  react:
+  react-nginx:
     build:
       context: .
       dockerfile: Dockerfile.front
-      target: react-build
     ports:
-      - '3001:3000'
-    volumes:
-      - .:/app # 変更をリアルタイムでマウントできるようルートディレクトリをappへマウント。
+      - '3000:80' # 3000番ポートからのアクセスを80番ポート(Nginx)に転送。
     depends_on:
       - django
 
@@ -22,17 +19,6 @@ services:
       - ./todo_app_v2:/app
     depends_on:
       - db
-
-  nginx:
-    build:
-      context: .
-      dockerfile: Dockerfile.front
-      target: nginx-build
-    ports:
-      - '3000:80'
-    depends_on:
-      - react
-      - django
 
   db:
     image: postgres:bullseye
