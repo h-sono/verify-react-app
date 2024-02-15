@@ -27,7 +27,7 @@ DEBUG = True
 
 # nginx.confでdjango:8000にリクエストを転送している。proxy_passにhttp://django:8000;
 # を指定しているが許可しないとdjangoにアクセスできないため許可している。
-ALLOWED_HOSTS = ['django', 'http://localhost:8000']
+ALLOWED_HOSTS = ['django', 'localhost']
 
 
 # Application definition
@@ -55,6 +55,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'todo_app_v2.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
 
 TEMPLATES = [
     {
@@ -135,5 +142,25 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+
+# consoleを定義しないとprint結果がログに表示されないので注意。
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
 
 # CSRF_TRUSTED_ORIGINS = ["http://localhost:8000"]

@@ -22,6 +22,8 @@
 
 ## Django
 
+### 全般
+
 - 仮想環境に切り替える(Ubuntu)：`C:\Users\sonob\github\verify-react-app>`で`source todoappenv/bin/activate`
 - 起動する：`(testenv) C:\Users\sonob\github\test-app\testapp>python manage.py runserver`
   ※settings の local.py を読み取る場合：`python manage.py runserver --settings=todo_app_v2.settings.local`
@@ -30,6 +32,10 @@
 - `todo_app`配下の`models.py`でマイグレーションファイルを生成：`python manage.py makemigrations todo_app`
   ※PostgreSQl の認証ができない場合は`docker-compose down --rmi all`でイメージ、コンテナ、ボリュームをすべて削除して再度`docker-compose up --build`でビルドしなおす。docker 起動中にパスワードを変更したり、古いパスワードのイメージやコンテナを使っていると認証エラーが発生することがある。
 - `todo_app/migrations/`配下のマイグレーションファイルでマイグレートする：`python manage.py migrate todo_app`
+
+### Django REST framework の UI を開く場合
+
+- Docker にて Django を起動した状態で：`http:/localhost:8000/api/{特定のAPIのURL}`
 
 ## Docker
 
@@ -133,7 +139,7 @@ react2:
 
 - `COPY . .`のようにルートディレクトリのソースすべてをワークディレクトリにコピーするとイメージサイズが大きくなる。必要なディレクトリだけコピーするようにする。
 
+### Docker 起動時に以下エラーが発生した場合の対応
 
-### Docker起動時に以下エラーが発生した場合の対応
 - `sh: 1: react-scripts: Permission denied`
-⇒react-scriptsに実行権限を与える。verify-react-appディレクトリで`chmod +x node_modules/.bin/react-scripts`実行。
+  ⇒react-scripts に実行権限を与える。verify-react-app ディレクトリで`chmod +x node_modules/.bin/react-scripts`実行。
