@@ -1,12 +1,19 @@
 from django.db import models
 from .base_models import BaseModel
+from django.contrib.auth.models import User
 
 
-class TestCodeModel(BaseModel):
-    """ テストコードモデル """
+class Todo(BaseModel):
+    """ todo """
     class Meta:
-        db_table = "test_code_model"
-        verbose_name = verbose_name_plural = "テストコードテーブル"
+        db_table = "todo"
+        verbose_name = verbose_name_plural = "todo格納テーブル"
 
-    code = models.CharField(verbose_name="コード", max_length=30, null=True, blank=True)
-    code_ownership_user = models.CharField(verbose_name="コード所有ユーザー", max_length=30, null=True, blank=True)
+    user_id = models.ForeignKey(
+        User,
+        verbose_name="ユーザーID",
+        on_delete=models.CASCADE,
+        db_column="user_id"
+    )
+    todo = models.CharField(verbose_name="todo内容", max_length=1000, null=True, blank=True)
+    appltype = models.JSONField(verbose_name="登録種別", default=list)

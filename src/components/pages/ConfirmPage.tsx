@@ -62,9 +62,9 @@ export const ConfirmPage: React.FC = () => {
       };
   }
 
-  const handleSubmit = () => {
-    console.log('登録API呼び出しを定義');
-  };
+  // const handleSubmit = () => {
+  //   console.log('登録API呼び出しを定義');
+  // };
 
   // 戻るボタン押下時。
   const handlePageBack = () => {
@@ -80,7 +80,7 @@ export const ConfirmPage: React.FC = () => {
     <ConfirmPageView
       confirmItemNameList={confirmItemName}
       todoForm={storageTodoFormData}
-      handleSubmit={handleSubmit}
+      // handleSubmit={handleSubmit}
       handlePageBack={handlePageBack}
     />
   );

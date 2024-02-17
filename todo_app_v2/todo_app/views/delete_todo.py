@@ -5,10 +5,10 @@ from todo_app.models import Todo
 from django.contrib.auth.models import User
 
 
-@api_view(["GET"])
-def get(request, user_id):
+@api_view(["POST"])
+def post(request):
     """
-    特定ユーザーの全todoを取得
+    特定のtodoを削除
 
     Args
         todo_id: Todoテーブルのid
@@ -18,16 +18,16 @@ def get(request, user_id):
         id: Todoテーブルのid
     """
     # TODO:シリアライザでのバリデーションを追加。
+    todo_id = request.data.get("todo_id")
+    user_id = request.data.get("user_id")
+
     # Userテーブルを検索。
     user = User.objects.get(id=user_id)
 
     # Todoテーブルを検索。
-    todos = Todo.objects.filter(user_id=user.id).values(
-        "id", "todo", "appltype", "del_flg", "update_date_time"
-    )
+    get_todo = Todo.objects.get(id=todo_id, user_id=user.id)
+    # todoテーブルの削除フラグをTrueに更新(論理削除)。
+    get_todo.del_flg = True
+    get_todo.save()
 
-    # update_date_timeをdatetimeからstringに変換。
-    for item in todos:
-        item["update_date_time"] = item["update_date_time"].strftime("%Y-%m-%d")
-
-    return Response({"todo_list": todos}, status=status.HTTP_200_OK)
+    return Response({"id": get_todo.id}, status=status.HTTP_200_OK)

@@ -1,5 +1,19 @@
 {
-    "editor.formatOnSave": true,
+  "editor.formatOnSave": true,
+  "files.autoSave": "onFocusChange",
+  "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
     "files.autoSave": "onFocusChange",
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "files.autoSave": "onFocusChange",
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.formatOnSave": true,
+    "files.autoSave": "onFocusChange",
+  }
 }

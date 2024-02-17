@@ -4,12 +4,12 @@
 
 ## トップページのパス
 
-- `http://localhost:3000/todo`
+- `http://localhost:3000/todo/`
 
 ## Django REST Flamework 側のパス
 
 - `http://localhost:8000/api/`の後に API のパスを入れる。
-  ※例：`http://localhost:8000/api/top_list/`
+  ※例：`http://localhost:8000/api/todo/`
 
 ## Docker イメージの保管場所
 
