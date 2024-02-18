@@ -12,14 +12,14 @@ export const TopPage: React.FC = () => {
     { todo: 'テストメモ2', date: '2024/2/1', button: ['M'] },
     { todo: 'テストメモ3', date: '2024/2/2', button: [] }
   ];
-  const [ resData, setResData ] = React.useState<object>({});
+  const [resData, setResData] = React.useState<object>({});
   React.useEffect(() => {
     // view_test.py呼び出し
-    setResData(getTodoList());
+    setResData(getTodoList('1'));
   }, []);
-  console.log('API返却値1---------------------')
-  console.log(resData)
-  console.log('API返却値1---------------------')
+  console.log('API返却値1---------------------');
+  console.log(resData);
+  console.log('API返却値1---------------------');
   // セッションストレージをクリアする
   SessionStorageAllClear();
   return <TopPageView tableList={test_list} />;

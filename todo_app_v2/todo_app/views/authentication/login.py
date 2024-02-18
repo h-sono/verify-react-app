@@ -2,10 +2,16 @@ from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_protect
+# from todo_app.views.custom_csrf_protect import custom_csrf_protect
 
 
 @api_view(["POST"])
+@csrf_protect
 def post(request):
+    print("request---------------------------")
+    print(request.get.header)
+    print("request---------------------------")
     # TODO:シリアライザでのバリデーションを追加。
     username = request.data.get("username")
     password = request.data.get("password")
@@ -16,11 +22,12 @@ def post(request):
         return Response(
             {
                 "user_id": user.id,
-                "message": "Login successful !!",
+                "user_name": username,
+                "login_flg": True,
             },
             status=status.HTTP_200_OK,
         )
     else:
         return Response(
-            {"message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+            {"login_flg": False}, status=status.HTTP_401_UNAUTHORIZED
         )

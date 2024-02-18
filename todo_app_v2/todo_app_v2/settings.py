@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "todo_app_v2",
     "todo_app",
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
@@ -165,4 +167,12 @@ LOGGING = {
     },
 }
 
-# CSRF_TRUSTED_ORIGINS = ["http://localhost:8000"]
+# 信頼できるオリジンを定義。
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+
+# CSRFトークンをHttpOnlyとする。
+# CSRF_COOKIE_HTTPONLY = True
+
+# 開発環境にてhttp接続でのCSRFトークン検証をするためにFalseとする。
+# ※本番ではhttps接続でCSRFトークン検証をするためにTrueとする。
+CSRF_COOKIE_SECURE = False

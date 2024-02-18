@@ -1,17 +1,16 @@
 import axios from 'axios';
 
-export const Post = (url: string, req: any) => {
+export const Get = async (url: string) => {
   let resData: object = {};
-  axios
-    .post(url, req)
+  await axios
+    .get(url)
     .then((res: any) => {
-      console.log(res.data);
       resData = res.data;
     })
-    .catch((e) => {
+    .catch(e => {
       console.log('API通信に失敗しました。');
       console.log(e);
     });
-
+  // Promise<object>を返却。
   return resData;
 };
