@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
 import { TodoForm } from '../const/Form.tsx';
-import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
+import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
 import { New, Modify, Delete } from '../const/RegistrationType.tsx';
 import { ConfirmPageView } from '../organisms/ConfirmPageView.tsx';
@@ -13,10 +13,10 @@ import { DeleteTodo, DeleteTodoResProps } from '../callApi/DeleteTodo.tsx';
 
 // 確認画面のロジックコンポーネント
 export const ConfirmPage: React.FC = () => {
+  // ページ遷移で使用するナビゲーションの宣言。
   const navigate = useNavigate();
-
-  // セッションストレージに保存されているフォームデータを管理。
-  const [storageTodoFormData, setStorageTodoFormData] = React.useState<SessionStorageFormDataProps>({
+  // セッションストレージのTodoFormから取得した値の状態管理。
+  const [storageTodoFormData, setStorageTodoFormData] = React.useState<SessionStorageTodoFormProps>({
     user_id: 0,
     todo_id: 0,
     todo: '',
@@ -35,7 +35,7 @@ export const ConfirmPage: React.FC = () => {
 
   // 確認ページ描画時にセッションストレージから値を取得。
   React.useEffect(() => {
-    const getFormData: SessionStorageFormDataProps = SessionStorageItemGet(TodoForm);
+    const getFormData: SessionStorageTodoFormProps = SessionStorageItemGet(TodoForm);
     if (getFormData) {
       setStorageTodoFormData({
         user_id: getFormData.user_id,
@@ -78,8 +78,9 @@ export const ConfirmPage: React.FC = () => {
       };
   }
 
+  // 登録ボタンを押下したときのアクション。
   const handleSubmit = () => {
-    if (storageTodoFormData.applType !== New) {
+    if (storageTodoFormData.applType === New) {
       // 新規登録の場合は/api/add_todo/を呼び出す。
       AddTodo(
         { user_id: storageTodoFormData.user_id, todo: storageTodoFormData.todo },
@@ -96,7 +97,7 @@ export const ConfirmPage: React.FC = () => {
           setAddTodoRes(data);
         }
       });
-    } else if (storageTodoFormData.applType !== Modify) {
+    } else if (storageTodoFormData.applType === Modify) {
       // 変更登録の場合は/api/update_todo/を呼び出す。
       UpdateTodo(
         { todo_id: storageTodoFormData.todo_id, user_id: storageTodoFormData.user_id, todo: storageTodoFormData.todo },
@@ -113,7 +114,7 @@ export const ConfirmPage: React.FC = () => {
           setUpdateTodoRes(data);
         }
       });
-    } else if (storageTodoFormData.applType !== Delete) {
+    } else {
       // 削除の場合は/api/delete_todo/を呼び出す。
       DeleteTodo(
         { todo_id: storageTodoFormData.todo_id, user_id: storageTodoFormData.user_id },

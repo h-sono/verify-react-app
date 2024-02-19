@@ -8,7 +8,7 @@ export interface GetTodoListResProps {
   update_date_time: string;
 }
 
-export const getTodoList = (user_id: number) => {
+export const getTodoList = (user_id?: number) => {
   // Nginxのlocation /api からDjangoの8000番ポートに転送する設定のためオリジンの指定は不要。
   return Get(`/api/todo/${user_id}`);
 };

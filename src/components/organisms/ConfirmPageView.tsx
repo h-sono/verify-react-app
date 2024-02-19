@@ -1,11 +1,11 @@
 import React from 'react';
 import { InputTextField } from '../molecules/InputTextField.tsx';
-import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
+import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
 
 export interface ConfirmPageViewProps {
   confirmItemNameList: ResistrationTypeDisplayProps;
-  todoForm: SessionStorageFormDataProps;
+  todoForm: SessionStorageTodoFormProps;
   handleSubmit: () => void;
   handlePageBack: () => void;
 }

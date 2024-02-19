@@ -3,12 +3,6 @@ import { UpdateButton } from '../atoms/UpdateButton.tsx';
 import { INPUT } from '../const/RoutingPath.tsx';
 import { New } from '../const/RegistrationType.tsx';
 import { GetTodoListResProps } from '../callApi/GetTodoList.tsx';
-
-export interface TableListDetails {
-  todo: string;
-  date: string;
-  button: string[];
-}
 export interface TableList {
   todoList: GetTodoListResProps[];
 }
@@ -18,6 +12,7 @@ export const TopPageView: React.FC<TableList> = props => {
   const { todoList } = props;
   return (
     <div>
+      {/* 新規ボタン */}
       <UpdateButton pagePath={INPUT} applType={New} />
       <table>
         <tr>
@@ -31,7 +26,13 @@ export const TopPageView: React.FC<TableList> = props => {
             <td>{item.update_date_time}</td>
             {item.appltype.map((buttonItem, buttonItemIndex) => (
               <td>
-                <UpdateButton todo={item.todo} date={item.update_date_time} pagePath={INPUT} applType={buttonItem} />
+                <UpdateButton
+                  todo_id={item.id}
+                  todo={item.todo}
+                  date={item.update_date_time}
+                  pagePath={INPUT}
+                  applType={buttonItem}
+                />
               </td>
             ))}
           </tr>

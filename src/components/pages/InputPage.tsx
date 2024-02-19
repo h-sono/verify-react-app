@@ -2,18 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CONFIRM } from '../const/RoutingPath.tsx';
 import { TodoForm } from '../const/Form.tsx';
-import { SessionStorageSet, SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
+import {
+  SessionStorageSet,
+  SessionStorageItemGet,
+  SessionStorageTodoFormProps
+} from '../utils/SessionStorageUtils.tsx';
 import { InputPageView } from '../organisms/InputPageView.tsx';
 import { New, Modify } from '../const/RegistrationType.tsx';
 import { TODO } from '../const/RoutingPath.tsx';
-
-export interface SessionStorageFormDataProps {
-  user_id: number;
-  todo_id: number;
-  todo: string;
-  date: string;
-  applType: string;
-}
 
 export interface ResistrationTypeDisplayProps {
   title: string;
@@ -23,11 +19,11 @@ export interface ResistrationTypeDisplayProps {
 
 // 入力画面のロジックコンポーネント
 export const InputPage: React.FC = () => {
+  // ページ遷移で使用するナビゲーションの宣言。
   const navigate = useNavigate();
 
-  // useState一覧
-  // 入力フォームの入力状態を管理。
-  const [todoForm, setTodoForm] = React.useState<SessionStorageFormDataProps>({
+  // セッションストレージのTodoFormから取得した値の状態管理。
+  const [todoForm, setTodoForm] = React.useState<SessionStorageTodoFormProps>({
     user_id: 0,
     todo_id: 0,
     todo: '',
@@ -37,7 +33,7 @@ export const InputPage: React.FC = () => {
 
   // 入力ページ描画時にセッションストレージから値を取得。
   React.useEffect(() => {
-    const getFormData: SessionStorageFormDataProps = SessionStorageItemGet(TodoForm);
+    const getFormData: SessionStorageTodoFormProps = SessionStorageItemGet(TodoForm);
     // セッションストレージの値を入力フォームにセット。
     if (getFormData) {
       setTodoForm({
@@ -50,11 +46,11 @@ export const InputPage: React.FC = () => {
     }
   }, []);
 
-  // 入力フォームの値が変更された時に実行。
+  // 入力フォームの値が変更された時に実行。todoの内容だけ変更される。
   const handleInputChange = e => {
     setTodoForm({
-      user_id: e.target.user_id,
-      todo_id: e.target.todo_id,
+      user_id: todoForm.user_id,
+      todo_id: todoForm.todo_id,
       todo: e.target.value,
       date: todoForm.date,
       applType: todoForm.applType
@@ -80,7 +76,7 @@ export const InputPage: React.FC = () => {
     navigate(TODO);
   };
 
-  // 登録種別によって入力画面の表示内容を切り替える。
+  // 登録種別によって入力画面の表示内容を切り替える。削除時は入力画面に遷移しない。
   let inputItemName: ResistrationTypeDisplayProps = {
     title: '',
     todoDisplay: '',

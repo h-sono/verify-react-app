@@ -1,3 +1,11 @@
+// セッションストレージのTopFormの型定義。
+export interface SessionStorageTodoFormProps {
+  user_id: number;
+  todo_id: number;
+  todo: string;
+  date: string;
+  applType: string;
+}
 /**
  * セッションストレージにキーと値をセットする関数。
  * @param key セッションストレージのキー。
