@@ -6,12 +6,13 @@ import { SessionStorageSet, SessionStorageItemGet } from '../utils/SessionStorag
 import { InputPageView } from '../organisms/InputPageView.tsx';
 import { New, Modify } from '../const/RegistrationType.tsx';
 import { TODO } from '../const/RoutingPath.tsx';
-import { getTodoList } from '../callApi/GetTodoList.tsx';
 
 export interface SessionStorageFormDataProps {
-  todo?: string;
-  date?: string;
-  applType?: string;
+  user_id: number;
+  todo_id: number;
+  todo: string;
+  date: string;
+  applType: string;
 }
 
 export interface ResistrationTypeDisplayProps {
@@ -27,6 +28,8 @@ export const InputPage: React.FC = () => {
   // useState一覧
   // 入力フォームの入力状態を管理。
   const [todoForm, setTodoForm] = React.useState<SessionStorageFormDataProps>({
+    user_id: 0,
+    todo_id: 0,
     todo: '',
     date: '',
     applType: ''
@@ -37,19 +40,33 @@ export const InputPage: React.FC = () => {
     const getFormData: SessionStorageFormDataProps = SessionStorageItemGet(TodoForm);
     // セッションストレージの値を入力フォームにセット。
     if (getFormData) {
-      setTodoForm({ todo: getFormData.todo, date: getFormData.date, applType: getFormData.applType });
+      setTodoForm({
+        user_id: getFormData.user_id,
+        todo_id: getFormData.todo_id,
+        todo: getFormData.todo,
+        date: getFormData.date,
+        applType: getFormData.applType
+      });
     }
   }, []);
 
   // 入力フォームの値が変更された時に実行。
   const handleInputChange = e => {
-    setTodoForm({ todo: e.target.value, date: todoForm.date, applType: todoForm.applType });
+    setTodoForm({
+      user_id: e.target.user_id,
+      todo_id: e.target.todo_id,
+      todo: e.target.value,
+      date: todoForm.date,
+      applType: todoForm.applType
+    });
   };
 
   // 確認ボタンが押下された時に実行。
   const handleConirm = () => {
     // セッションストレージに入力したフォームの値をセット。
     SessionStorageSet(TodoForm, {
+      user_id: todoForm.user_id,
+      todo_id: todoForm.todo_id,
       todo: todoForm.todo,
       date: todoForm.date,
       applType: todoForm.applType
@@ -91,17 +108,6 @@ export const InputPage: React.FC = () => {
         todoPlaceholder: 'Todo内容を入力してください'
       };
   }
-
-  // TODO:API呼び出し
-  const [ resData, setResData ] = React.useState<object>({});
-  React.useEffect(() => {
-    // view_test.py呼び出し
-    setResData(getTodoList());
-  }, []);
-  console.log('API返却値2---------------------')
-  console.log(resData)
-  console.log('API返却値2---------------------')
-
 
   return (
     <InputPageView

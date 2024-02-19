@@ -7,14 +7,17 @@ import { Delete } from '../const/RegistrationType.tsx';
 import { CONFIRM } from '../const/RoutingPath.tsx';
 
 export interface UpdateButtonInfo {
+  user_id?: number;
+  todo_id?: number;
   todo?: string;
   date?: string;
   pagePath: string;
   applType: string;
 }
 
+// TODO:user_idとtodo_idを持ってくる
 export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
-  const { todo = '', date = '', pagePath, applType } = props;
+  const { user_id = 1, todo_id = 1, todo = '', date = '', pagePath, applType } = props;
   const navigate = useNavigate();
 
   // 登録種別に対応した登録種別名を管理。
@@ -31,6 +34,8 @@ export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
   const handleButtonClick = () => {
     // セッションストレージに選択したTodoの情報を保存。
     SessionStorageSet(TodoForm, {
+      user_id: user_id,
+      todo_id: todo_id,
       todo: todo,
       date: date,
       applType: applType

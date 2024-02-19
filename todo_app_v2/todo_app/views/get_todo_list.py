@@ -18,16 +18,19 @@ def get(request, user_id):
         id: Todoテーブルのid
     """
     # TODO:シリアライザでのバリデーションを追加。
-    # Userテーブルを検索。
-    user = User.objects.get(id=user_id)
+    try:
+        # Userテーブルを検索。
+        user = User.objects.get(id=user_id)
 
-    # Todoテーブルを検索。
-    todos = Todo.objects.filter(user_id=user.id).values(
-        "id", "todo", "appltype", "del_flg", "update_date_time"
-    )
+        # Todoテーブルを検索。
+        todos = Todo.objects.filter(user_id=user.id, del_flg=False).values(
+            "id", "todo", "appltype", "del_flg", "update_date_time"
+        )
 
-    # update_date_timeをdatetimeからstringに変換。
-    for item in todos:
-        item["update_date_time"] = item["update_date_time"].strftime("%Y-%m-%d")
+        # update_date_timeをdatetimeからstringに変換。
+        for item in todos:
+            item["update_date_time"] = item["update_date_time"].strftime("%Y-%m-%d")
+    except Exception:
+        return Response({"error_flg": True}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response({"todo_list": todos}, status=status.HTTP_200_OK)

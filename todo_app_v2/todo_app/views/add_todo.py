@@ -23,15 +23,19 @@ def post(request):
     user_id = request.data.get("user_id")
     todo = request.data.get("todo")
 
-    # Userテーブル(Django標準搭載のテーブル：auth_user)を検索。
-    user = User.objects.get(id=user_id)
+    try:
+        # Userテーブルを検索。
+        user = User.objects.get(id=user_id, del_flg=False)
 
-    # Todoテーブルに登録。
-    todo = Todo.objects.create(
-        user_id=user,
-        todo=todo,
-        appltype=[MODIFIY, DELETE],
-        created_date_time=datetime.now(),
-        update_date_time=datetime.now()
-    )
-    return Response({"id": todo.id}, status=status.HTTP_200_OK)
+        # Todoテーブルに登録。
+        todo = Todo.objects.create(
+            user_id=user,
+            todo=todo,
+            appltype=[MODIFIY, DELETE],
+            created_date_time=datetime.now(),
+            update_date_time=datetime.now()
+        )
+    except Exception:
+        return Response({"error_flg": True}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response({"id": todo.id, "error_flg": False}, status=status.HTTP_200_OK)

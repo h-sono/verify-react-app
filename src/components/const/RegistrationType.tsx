@@ -2,7 +2,7 @@ export interface ResistrationType {
   [key: string]: string;
 }
 
-// 登録種別一覧：N(New：新規登録),M(Modify：変更登録),D(Delete：削除)
+// 登録種別一覧：N(New：新規登録),M(Update：変更登録),D(Delete：削除)
 export const New = 'N';
 export const Modify = 'M';
 export const Delete = 'D';

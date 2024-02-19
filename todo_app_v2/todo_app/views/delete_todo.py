@@ -21,13 +21,16 @@ def post(request):
     todo_id = request.data.get("todo_id")
     user_id = request.data.get("user_id")
 
-    # Userテーブルを検索。
-    user = User.objects.get(id=user_id)
+    try:
+        # Userテーブルを検索。
+        user = User.objects.get(id=user_id, del_flg=False)
 
-    # Todoテーブルを検索。
-    get_todo = Todo.objects.get(id=todo_id, user_id=user.id)
-    # todoテーブルの削除フラグをTrueに更新(論理削除)。
-    get_todo.del_flg = True
-    get_todo.save()
+        # Todoテーブルを検索。
+        get_todo = Todo.objects.get(id=todo_id, user_id=user.id, del_flg=False)
+        # todoテーブルの削除フラグをTrueに更新(論理削除)。
+        get_todo.del_flg = True
+        get_todo.save()
+    except Exception:
+        return Response({"error_flg": True}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    return Response({"id": get_todo.id}, status=status.HTTP_200_OK)
+    return Response({"id": get_todo.id, "error_flg": False}, status=status.HTTP_200_OK)
