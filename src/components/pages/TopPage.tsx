@@ -12,19 +12,25 @@ export const TopPage: React.FC = () => {
   // ユーザー情報を格納しているコンテキストの呼び出し。
   const UseUserContext = useContext(UserInfoContext);
   // /api/get_todo_list/から取得した返却値の状態管理。
-  const [todoList, setTodoList] = React.useState<GetTodoListResProps[]>([
-    {
-      id: 0,
-      todo: '',
-      appltype: [''],
-      del_flg: false,
-      update_date_time: ''
-    }
-  ]);
+  const [todoList, setTodoList] = React.useState<GetTodoListResProps>({
+    todo_list: [
+      {
+        id: 0,
+        todo: '',
+        appltype: [''],
+        del_flg: false,
+        update_date_time: ''
+      }
+    ]
+  });
 
-  // Todoリスト一覧表示のために/api/get_todo_list/を呼び出す。user_idで検索。
+  // Todoリスト一覧表示のために/api/get_todo_list/を呼び出す。UseUserContext.user_idで検索するよう改修。
+  console.log(UseUserContext.user_id);
   React.useEffect(() => {
-    getTodoList(UseUserContext.user_id).then((data: any) => {
+    getTodoList(1).then((data: any) => {
+      console.log('data-----------------------------------');
+      console.log(data);
+      console.log('data-----------------------------------');
       if (data.error_flg) {
         // TODO:エラーを出す。
         console.log('一覧取得失敗。');
@@ -33,6 +39,10 @@ export const TopPage: React.FC = () => {
       }
     });
   }, [UseUserContext]);
+
+  console.log('todoList-----------------------------------');
+  console.log(todoList);
+  console.log('todoList-----------------------------------');
 
   return <TopPageView todoList={todoList} />;
 };

@@ -9,6 +9,7 @@ class Todo(BaseModel):
         db_table = "todo"
         verbose_name = verbose_name_plural = "todo格納テーブル"
 
+    id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(
         User,
         verbose_name="ユーザーID",

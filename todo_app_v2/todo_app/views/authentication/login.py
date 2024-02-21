@@ -1,3 +1,4 @@
+import logging
 from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -5,13 +6,11 @@ from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_protect
 # from todo_app.views.custom_csrf_protect import custom_csrf_protect
 
-
 @api_view(["POST"])
 @csrf_protect
 def post(request):
-    print("request---------------------------")
-    print(request.get.header)
-    print("request---------------------------")
+    logger = logging.getLogger(__name__)
+
     # TODO:シリアライザでのバリデーションを追加。
     username = request.data.get("username")
     password = request.data.get("password")
@@ -28,6 +27,7 @@ def post(request):
             status=status.HTTP_200_OK,
         )
     else:
+        logger.debug("failed login!")
         return Response(
             {"login_flg": False}, status=status.HTTP_401_UNAUTHORIZED
         )

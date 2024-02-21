@@ -4,7 +4,7 @@ import { INPUT } from '../const/RoutingPath.tsx';
 import { New } from '../const/RegistrationType.tsx';
 import { GetTodoListResProps } from '../callApi/GetTodoList.tsx';
 export interface TableList {
-  todoList: GetTodoListResProps[];
+  todoList: GetTodoListResProps;
 }
 
 // 一覧画面のビューコンポーネント
@@ -20,7 +20,7 @@ export const TopPageView: React.FC<TableList> = props => {
           <th>登録日</th>
           <th>更新</th>
         </tr>
-        {todoList.map((item, index) => (
+        {todoList.todo_list.map((item, index) => (
           <tr key={index}>
             <td>{item.todo}</td>
             <td>{item.update_date_time}</td>

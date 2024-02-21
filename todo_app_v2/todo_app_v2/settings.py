@@ -147,13 +147,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# settings.py
-
-# consoleを定義しないとprint結果がログに表示されないので注意。
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
+        # 'file': {
+        #     'level': 'DEBUG',
+        #     'class': 'logging.FileHandler',
+        #     'filename': 'django_log_file.log',
+        # },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -161,18 +163,20 @@ LOGGING = {
     },
     'loggers': {
         '': {
+            # 'handlers': ['console', 'file'],
             'handlers': ['console'],
             'level': 'DEBUG',
+            'propagate': True,
         },
     },
 }
 
-# 信頼できるオリジンを定義。
+# CSRF検証時に信頼できるオリジンを定義。
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
-# CSRFトークンをHttpOnlyとする。
-# CSRF_COOKIE_HTTPONLY = True
+# アクセス許可するオリジンを定義。
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 
-# 開発環境にてhttp接続でのCSRFトークン検証をするためにFalseとする。
-# ※本番ではhttps接続でCSRFトークン検証をするためにTrueとする。
-CSRF_COOKIE_SECURE = False
+# TrueにするとレスポンスヘッダーにAccess-Control-Allow-Credentials: true(withCredential: trueと同様)が
+# 含まれるようになりCORSエラーが発生しなくなる。CORS_ALLOWED_ORIGINSに設定したドメインのみに有効。
+CORS_ALLOW_CREDENTIALS = True

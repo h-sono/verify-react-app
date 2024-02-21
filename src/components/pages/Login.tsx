@@ -1,4 +1,5 @@
 import React from 'react';
+// import Cookies from 'js-cookie';
 import { PostLogin } from '../callApi/PostLogin.tsx';
 import { GetCsrfToken } from '../callApi/GetCsrfToken.tsx';
 import { useNavigate } from 'react-router-dom';
@@ -24,16 +25,25 @@ export const Login: React.FC = () => {
   // ログインフォームで入力したパスワードの状態管理。
   const [password, setPassword] = React.useState<string>('');
   // /api/get_csrf_token/から取得したCSRFトークンの状態管理。
-  const [csrfToken, setCsrfToken] = React.useState<CsrfProps>({ token: '' });
+  // const [csrfToken, setCsrfToken] = React.useState<CsrfProps>({ token: '' });
   // /api/login/から取得したログイン情報の状態管理。
   const [login, setLogin] = React.useState<LoginResProps>({ user_id: 0, user_name: '', login_flg: false });
 
   // CSRFトークン取得。API側の@csrf_protectで検証。
+  // React.useEffect(() => {
+  //   GetCsrfToken().then((data: any) => {
+  //     setCsrfToken(data);
+  //   });
+  // }, []);
   React.useEffect(() => {
-    GetCsrfToken().then((data: any) => {
-      setCsrfToken(data);
-    });
+    GetCsrfToken();
   }, []);
+  // console.log('csrfトークン----------------------------');
+  // console.log(Cookies.get('csrftoken'));
+  // console.log('csrfトークン----------------------------');
+  // console.log('csrfトークン----------------------------');
+  // console.log(csrfToken);
+  // console.log('csrfトークン----------------------------');
 
   // ログインボタンを押下したときに/api/login/を呼び出して認証する。
   const handleSubmit = () => {
@@ -41,7 +51,8 @@ export const Login: React.FC = () => {
       { username, password },
       {
         headers: {
-          'X-CSRFToken': csrfToken.token,
+          // 'X-CSRFToken': csrfToken.token,
+          // 'X-CSRFToken': Cookies.get('csrftoken'),
           'Content-Type': 'application/json'
         }
       }
