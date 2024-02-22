@@ -174,6 +174,9 @@ LOGGING = {
 # CSRF検証時に信頼できるオリジンを定義。
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
+# cookieのCSRFトークンのキー名を定義。
+CSRF_COOKIE_NAME = 'csrftoken'
+
 # アクセス許可するオリジンを定義。
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 

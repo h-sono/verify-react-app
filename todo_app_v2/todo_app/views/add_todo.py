@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 # from django.views.decorators.csrf import csrf_protect
 
 
+# TODO:CSRFトークン検証を一時的に停止中
 @api_view(["POST"])
 # @csrf_protect
 def post(request):

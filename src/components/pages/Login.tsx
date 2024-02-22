@@ -1,49 +1,51 @@
-import React from 'react';
-// import Cookies from 'js-cookie';
+import React, { useContext } from 'react';
 import { PostLogin } from '../callApi/PostLogin.tsx';
 import { GetCsrfToken } from '../callApi/GetCsrfToken.tsx';
 import { useNavigate } from 'react-router-dom';
 import { LOGIN, TODO } from '../const/RoutingPath.tsx';
 import { UserInfoContext } from '../hook/CommonUseContext.tsx';
+import { LoginResProps } from '../callApi/PostLogin.tsx';
+import { GetLogout, LogoutResProps } from '../callApi/GetLogout.tsx';
 
-export interface CsrfProps {
-  token: string;
-}
-
-export interface LoginResProps {
-  user_id?: number;
-  user_name?: string;
-  login_flg: boolean;
-}
-
-// TODO:未完成
 export const Login: React.FC = () => {
   // ページ遷移で使用するナビゲーションの宣言。
   const navigate = useNavigate();
+  // ユーザー情報を格納しているコンテキストの呼び出し。
+  const UseUserContext = useContext(UserInfoContext);
   // ログインフォームで入力したユーザー名の状態管理。
   const [username, setUsername] = React.useState<string>('');
   // ログインフォームで入力したパスワードの状態管理。
   const [password, setPassword] = React.useState<string>('');
-  // /api/get_csrf_token/から取得したCSRFトークンの状態管理。
-  // const [csrfToken, setCsrfToken] = React.useState<CsrfProps>({ token: '' });
-  // /api/login/から取得したログイン情報の状態管理。
+  // /api/todo/login/から取得したログイン情報の状態管理。
   const [login, setLogin] = React.useState<LoginResProps>({ user_id: 0, user_name: '', login_flg: false });
+  // /api/todo/login/から取得した情報の状態管理。
+  const [logout, setLogout] = React.useState<LogoutResProps>({ logout_flg: false });
 
-  // CSRFトークン取得。API側の@csrf_protectで検証。
-  // React.useEffect(() => {
-  //   GetCsrfToken().then((data: any) => {
-  //     setCsrfToken(data);
-  //   });
-  // }, []);
+  // user_idが1以上であった場合、ログインが完了しているのでログイン画面を開こうとしたときに
+  // トップ画面に遷移するようにしている。ログインしなおしたければ一度ログアウトする。
   React.useEffect(() => {
-    GetCsrfToken();
+    if (UseUserContext.user_id !== undefined) {
+      if (UseUserContext.user_id > 0) {
+        navigate(TODO);
+      }
+    }
+  }, [UseUserContext]);
+
+  // ログイン画面のURLを直接指定された場合などにセッションを終了するよう
+  // ログアウトAPIを呼び出す(cookieのセッションIDが削除される=セッションが終了する)。
+  React.useEffect(() => {
+    GetLogout().then((data: any) => {
+      setLogout(data);
+    });
   }, []);
-  // console.log('csrfトークン----------------------------');
-  // console.log(Cookies.get('csrftoken'));
-  // console.log('csrfトークン----------------------------');
-  // console.log('csrfトークン----------------------------');
-  // console.log(csrfToken);
-  // console.log('csrfトークン----------------------------');
+
+  // CSRFトークン取得(cookieにセットされるのでリクエストヘッダに含める必要はない)。
+  // API側の@csrf_protectで検証。
+  React.useEffect(() => {
+    if (logout) {
+      GetCsrfToken();
+    }
+  }, [logout]);
 
   // ログインボタンを押下したときに/api/login/を呼び出して認証する。
   const handleSubmit = () => {
@@ -51,8 +53,6 @@ export const Login: React.FC = () => {
       { username, password },
       {
         headers: {
-          // 'X-CSRFToken': csrfToken.token,
-          // 'X-CSRFToken': Cookies.get('csrftoken'),
           'Content-Type': 'application/json'
         }
       }
