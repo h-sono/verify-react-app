@@ -1,11 +1,12 @@
 import React from 'react';
 import { InputTextField } from '../molecules/InputTextField.tsx';
-import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
+import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
+import { Header } from '../atoms/Header.tsx';
 
 export interface InputPageViewProps {
   inputItemNameList: ResistrationTypeDisplayProps;
-  todoForm: SessionStorageFormDataProps;
+  todoForm: SessionStorageTodoFormProps;
   handleInputChange: (e: any) => void;
   handleConirm: () => void;
   handlePageBack: () => void;
@@ -17,6 +18,7 @@ export const InputPageView: React.FC<InputPageViewProps> = props => {
 
   return (
     <div>
+      <Header />
       <p>{inputItemNameList.title}</p>
       <br />
       <InputTextField

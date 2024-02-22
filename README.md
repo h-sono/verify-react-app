@@ -2,14 +2,14 @@
 
 - https://github.com/h-sono/verify-react-app
 
-## トップページのパス
+## ログインページのパス
 
-- `http://localhost:3000/todo`
+- `http://localhost:3000/todo/login/`
 
 ## Django REST Flamework 側のパス
 
 - `http://localhost:8000/api/`の後に API のパスを入れる。
-  ※例：`http://localhost:8000/api/top_list/`
+  ※例：`http://localhost:8000/api/todo/`
 
 ## Docker イメージの保管場所
 
@@ -22,6 +22,8 @@
 
 ## Django
 
+### 全般
+
 - 仮想環境に切り替える(Ubuntu)：`C:\Users\sonob\github\verify-react-app>`で`source todoappenv/bin/activate`
 - 起動する：`(testenv) C:\Users\sonob\github\test-app\testapp>python manage.py runserver`
   ※settings の local.py を読み取る場合：`python manage.py runserver --settings=todo_app_v2.settings.local`
@@ -30,6 +32,10 @@
 - `todo_app`配下の`models.py`でマイグレーションファイルを生成：`python manage.py makemigrations todo_app`
   ※PostgreSQl の認証ができない場合は`docker-compose down --rmi all`でイメージ、コンテナ、ボリュームをすべて削除して再度`docker-compose up --build`でビルドしなおす。docker 起動中にパスワードを変更したり、古いパスワードのイメージやコンテナを使っていると認証エラーが発生することがある。
 - `todo_app/migrations/`配下のマイグレーションファイルでマイグレートする：`python manage.py migrate todo_app`
+
+### Django REST framework の UI を開く場合
+
+- Docker にて Django を起動した状態で：`http:/localhost:8000/api/{特定のAPIのURL}`
 
 ## Docker
 
@@ -61,13 +67,13 @@
 
 ### イメージのプッシュ手順
 
-#### イメージ：test-app-react（サービス名：react）のプッシュ手順
+#### イメージ：verify-app-react（サービス名：react）のプッシュ手順
 
 - イメージのビルド：`PS C:\Users\sonob\github\test-app> docker build -t hsonosono/test-app-react . -f Dockerfile.front`
 - タグ付け：`PS C:\Users\sonob\github\test-app> docker tag hsonosono/test-app-react:latest docker.io/hsonosono/test-app-react:latest`
 - Docker Hub へのイメージのプッシュ：`PS C:\Users\sonob\github\test-app> docker push docker.io/hsonosono/test-app-react:latest`
 
-#### イメージ：test-app-django（サービス名：django）のプッシュ手順
+#### イメージ：verify-app-django（サービス名：django）のプッシュ手順
 
 - イメージのビルド：`PS C:\Users\sonob\github\test-app> docker build -t hsonosono/test-app-django . -f Dockerfile.app`
 - タグ付け：`PS C:\Users\sonob\github\test-app> docker tag hsonosono/test-app-django:latest docker.io/hsonosono/test-app-django:latest`
@@ -133,7 +139,39 @@ react2:
 
 - `COPY . .`のようにルートディレクトリのソースすべてをワークディレクトリにコピーするとイメージサイズが大きくなる。必要なディレクトリだけコピーするようにする。
 
+### Docker 起動時に以下エラーが発生した場合の対応
 
-### Docker起動時に以下エラーが発生した場合の対応
 - `sh: 1: react-scripts: Permission denied`
-⇒react-scriptsに実行権限を与える。verify-react-appディレクトリで`chmod +x node_modules/.bin/react-scripts`実行。
+  ⇒react-scripts に実行権限を与える。verify-react-app ディレクトリで`chmod +x node_modules/.bin/react-scripts`実行。
+
+### テーブルデータ
+- 以下、todoテーブルにデータを挿入するときの例。
+```sql
+INSERT INTO todo (id, created_date_time, update_date_time, del_flg, todo, appltype, user_id) VALUES (1, NOW(), NOW(), false, 'テストtodo1', '["M", "C"]', 1);
+```
+- テーブルデータをjson形式でダンプする(Dockerは起動しておく)。
+```bash
+$ docker-compose exec django bash
+$ python manage.py dumpdata --indent 4 > dumpdata.json
+```
+- json形式でダンプしておいたテーブルデータをロードする(Dockerは起動しておく)。
+```bash
+$ docker-compose exec django bash
+# 以下コマンドを実行するディレクトリにあらかじめロードしたいjsonファイルを配置しておく。
+$ python manage.py loaddata dumpdata.json
+```
+
+## Reactをビルドせず開発サーバーで起動してDjango側のAPIを呼び出す
+- `docker-compose.yml`のサービス：`react-nginx`は`npm run build`で生成したhtml/jsファイル
+をNginxで配信してブラウザに描画している。よって、ビルド後にReact側のソースを変更しても変更が
+反映されない。
+- 開発時は即時変更を反映させたいので以下のようにする。
+  - `docker-compose.yml`のサービス：`react-nginx`をコメントアウトしてから`docker-compose up -d`などでDockerを起動。
+  - 別ターミナルで`npm run start`を実行し、Reactの開発サーバーを起動。
+  - ReactのAPI呼び出しコンポーネントを以下のように一時的に修正してDjango側のAPIにアクセスできるようにする。以下は/src/components/callApi/GetTodoList.tsxの例。
+  ```typescript
+  export const getTodoList = (user_id?: number) => {
+    // return Get(`/api/todo/${user_id}`);
+    return Get(`http://localhost:8000/api/todo/${user_id}`);
+  };
+  ```

@@ -27,7 +27,7 @@ DEBUG = True
 
 # nginx.confでdjango:8000にリクエストを転送している。proxy_passにhttp://django:8000;
 # を指定しているが許可しないとdjangoにアクセスできないため許可している。
-ALLOWED_HOSTS = ['django', 'http://localhost:8000']
+ALLOWED_HOSTS = ['django', 'localhost']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "todo_app_v2",
     "todo_app",
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -52,9 +53,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 ROOT_URLCONF = 'todo_app_v2.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
 
 TEMPLATES = [
     {
@@ -136,4 +147,45 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CSRF_TRUSTED_ORIGINS = ["http://localhost:8000"]
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        # 'file': {
+        #     'level': 'DEBUG',
+        #     'class': 'logging.FileHandler',
+        #     'filename': 'django_log_file.log',
+        # },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            # 'handlers': ['console', 'file'],
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+# セッションの有効期限：1時間に設定。
+SESSION_COOKIE_AGE = 3600
+
+# CSRFトークンの有効期限：1時間に設定。
+CSRF_COOKIE_AGE = 3600
+
+# cookieのCSRFトークンのキー名を定義。
+CSRF_COOKIE_NAME = 'csrftoken'
+
+# CSRF検証時に信頼できるオリジンを定義。
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+
+# アクセス許可するオリジンを定義。
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+
+# TrueにするとレスポンスヘッダーにAccess-Control-Allow-Credentials: true(withCredential: trueと同様)が
+# 含まれるようになりCORSエラーが発生しなくなる。CORS_ALLOWED_ORIGINSに設定したドメインのみに有効。
+CORS_ALLOW_CREDENTIALS = True

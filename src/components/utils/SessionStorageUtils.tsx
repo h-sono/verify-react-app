@@ -1,3 +1,18 @@
+// セッションストレージのTopFormの型定義。
+export interface SessionStorageTodoFormProps {
+  user_id: number;
+  todo_id: number;
+  todo: string;
+  date: string;
+  applType: string;
+}
+
+export interface SessionStorageUserInfoFormProps {
+  user_id: number;
+  user_name: string;
+  login_flg: boolean;
+}
+
 /**
  * セッションストレージにキーと値をセットする関数。
  * @param key セッションストレージのキー。
@@ -25,4 +40,15 @@ export const SessionStorageItemGet = (key: string) => {
  */
 export const SessionStorageAllClear = () => {
   sessionStorage.clear();
+};
+
+/**
+ * セッションストレージの特定のキーと値を削除する関数。
+ * @param keys セッションストレージのキーのリスト。
+ * @returns なし
+ */
+export const SessionStorageSpecificKeysClear = (keys: string[]) => {
+  keys.forEach(key => {
+    sessionStorage.removeItem(key);
+  });
 };

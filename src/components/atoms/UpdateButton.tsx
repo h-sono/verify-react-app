@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TodoForm } from '../const/Form.tsx';
 import { SessionStorageSet } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeList } from '../const/RegistrationType.tsx';
 import { Delete } from '../const/RegistrationType.tsx';
 import { CONFIRM } from '../const/RoutingPath.tsx';
+import { UserInfoContext } from '../hook/CommonUseContext.tsx';
 
 export interface UpdateButtonInfo {
   todo?: string;
+  todo_id?: number;
   date?: string;
   pagePath: string;
   applType: string;
 }
 
 export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
-  const { todo = '', date = '', pagePath, applType } = props;
+  const { todo_id = 0, todo = '', date = '', pagePath, applType } = props;
+  // ページ遷移で使用するナビゲーションの宣言。
   const navigate = useNavigate();
-
-  // 登録種別に対応した登録種別名を管理。
+  // ユーザー情報を格納しているコンテキストの呼び出し。
+  const UseUserContext = useContext(UserInfoContext);
+  // 登録種別に対応した登録種別名の状態管理。
   const [applTypeName, setApplTypeName] = React.useState<string>('');
 
   // 取得した登録種別名をセット。
@@ -31,6 +35,8 @@ export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
   const handleButtonClick = () => {
     // セッションストレージに選択したTodoの情報を保存。
     SessionStorageSet(TodoForm, {
+      user_id: UseUserContext.user_id,
+      todo_id: todo_id,
       todo: todo,
       date: date,
       applType: applType

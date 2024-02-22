@@ -1,21 +1,23 @@
 import React from 'react';
 import { InputTextField } from '../molecules/InputTextField.tsx';
-import { SessionStorageFormDataProps } from '../pages/InputPage.tsx';
+import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
+import { Header } from '../atoms/Header.tsx';
 
 export interface ConfirmPageViewProps {
   confirmItemNameList: ResistrationTypeDisplayProps;
-  todoForm: SessionStorageFormDataProps;
-  // handleSubmit: () => void;
+  todoForm: SessionStorageTodoFormProps;
+  handleSubmit: () => void;
   handlePageBack: () => void;
 }
 
 // 確認画面のビューコンポーネント
 export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
-  const { confirmItemNameList, todoForm, handlePageBack } = props;
+  const { confirmItemNameList, todoForm, handleSubmit, handlePageBack } = props;
 
   return (
     <div>
+      <Header />
       <p>{confirmItemNameList.title}</p>
       <br />
       <InputTextField
@@ -25,7 +27,7 @@ export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
         inputProps={{ readOnly: true }}
       />
       <br />
-      <button>登録</button>
+      <button onClick={handleSubmit}>登録</button>
       <button onClick={handlePageBack}>戻る</button>
     </div>
   );
