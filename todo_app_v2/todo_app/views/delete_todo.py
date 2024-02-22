@@ -4,12 +4,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from todo_app.models import Todo
 from django.contrib.auth.models import User
-# from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect
 
 
-# TODO:CSRFトークン検証を一時的に停止中
+@csrf_protect
 @api_view(["POST"])
-# @csrf_protect
 def post(request):
     """
     特定のtodoを削除

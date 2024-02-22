@@ -3,14 +3,12 @@ from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-# from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect
 
-# TODO:CSRFトークン検証を一時的に停止中
+@csrf_protect
 @api_view(["POST"])
-# @csrf_protect
 def post(request):
     logger = logging.getLogger(__name__)
-    logger.debug("loginのリクエスト: %s", request.data)
 
     # TODO:シリアライザでのバリデーションを追加。
     username = request.data.get("username")

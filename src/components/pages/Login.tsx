@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import Cookies from 'js-cookie';
 import { PostLogin } from '../callApi/PostLogin.tsx';
 import { GetCsrfToken } from '../callApi/GetCsrfToken.tsx';
 import { useNavigate } from 'react-router-dom';
 import { LOGIN, TODO } from '../const/RoutingPath.tsx';
-import { UserInfoContext } from '../hook/CommonUseContext.tsx';
 import { LoginResProps } from '../callApi/PostLogin.tsx';
 import { GetLogout } from '../callApi/GetLogout.tsx';
 import { SessionStorageSet } from '../utils/SessionStorageUtils.tsx';
@@ -16,9 +16,6 @@ export const Login: React.FC = () => {
 
   // ページ遷移で使用するナビゲーションの宣言。
   const navigate = useNavigate();
-
-  // ユーザー情報を格納しているコンテキストの呼び出し。
-  const UseUserContext = useContext(UserInfoContext);
 
   // ログインフォームで入力したユーザー名の状態管理。
   const [username, setUsername] = React.useState<string>('');
@@ -45,6 +42,8 @@ export const Login: React.FC = () => {
       { username, password },
       {
         headers: {
+          // POST時にCSRFトークン検証をするためヘッダーで送信。
+          'X-CSRFToken': Cookies.get('csrftoken'),
           'Content-Type': 'application/json'
         }
       }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
 import { TodoForm } from '../const/Form.tsx';
@@ -25,13 +26,13 @@ export const ConfirmPage: React.FC = () => {
   });
   // TODO:返却値を使わない場合は不要。/api/add_todo/の返却値を管理。
   const [addTodoRes, setAddTodoRes] = React.useState<AddTodoResProps>({ id: 0, error_flg: false });
-  console.log(addTodoRes);
+  console.log('add_todo.pyの返却値: ' + addTodoRes);
   // TODO:返却値を使わない場合は不要。/api/add_todo/の返却値を管理。
   const [updateTodoRes, setUpdateTodoRes] = React.useState<UpdateTodoResProps>({ id: 0, error_flg: false });
-  console.log(updateTodoRes);
+  console.log('update_todo.pyの返却値: ' + updateTodoRes);
   // TODO:返却値を使わない場合は不要。/api/add_todo/の返却値を管理。
   const [deleteTodoRes, setDeleteTodoRes] = React.useState<DeleteTodoResProps>({ id: 0, error_flg: false });
-  console.log(deleteTodoRes);
+  console.log('delete_todo.pyの返却値: ' + deleteTodoRes);
 
   // 確認ページ描画時にセッションストレージから値を取得。
   React.useEffect(() => {
@@ -86,6 +87,8 @@ export const ConfirmPage: React.FC = () => {
         { user_id: storageTodoFormData.user_id, todo: storageTodoFormData.todo },
         {
           headers: {
+            // POST時にCSRFトークン検証をするためヘッダーで送信。
+            'X-CSRFToken': Cookies.get('csrftoken'),
             'Content-Type': 'application/json'
           }
         }
@@ -103,6 +106,8 @@ export const ConfirmPage: React.FC = () => {
         { todo_id: storageTodoFormData.todo_id, user_id: storageTodoFormData.user_id, todo: storageTodoFormData.todo },
         {
           headers: {
+            // POST時にCSRFトークン検証をするためヘッダーで送信。
+            'X-CSRFToken': Cookies.get('csrftoken'),
             'Content-Type': 'application/json'
           }
         }
@@ -120,6 +125,8 @@ export const ConfirmPage: React.FC = () => {
         { todo_id: storageTodoFormData.todo_id, user_id: storageTodoFormData.user_id },
         {
           headers: {
+            // POST時にCSRFトークン検証をするためヘッダーで送信。
+            'X-CSRFToken': Cookies.get('csrftoken'),
             'Content-Type': 'application/json'
           }
         }

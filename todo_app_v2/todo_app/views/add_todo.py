@@ -6,12 +6,11 @@ from todo_app.models import Todo
 from todo_app.const.appl_type import MODIFIY, DELETE
 from datetime import datetime
 from django.contrib.auth.models import User
-# from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect
 
 
-# TODO:CSRFトークン検証を一時的に停止中
 @api_view(["POST"])
-# @csrf_protect
+@csrf_protect
 def post(request):
     """
     todoを新規追加

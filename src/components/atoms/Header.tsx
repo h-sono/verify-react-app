@@ -26,30 +26,32 @@ export const Header: React.FC = () => {
   }, []);
 
   return (
-    <header>
-      <nav>
-        <title style={{ fontSize: '30px' }}>Todoアプリ</title>
-        <ul>
-          <li>{userInfoForm.user_id > 0 ? `ユーザー: ${userInfoForm.user_name}` : '未ログイン'}</li>
-          <li>
-            <Link to={TODO}>トップページ</Link>
-          </li>
-          {userInfoForm.user_id >= 1 ? (
-            ''
-          ) : (
+    <div>
+      <h1 style={{ fontSize: '30px' }}>Todoアプリ</h1>
+      <header>
+        <nav>
+          <ul>
+            <li>{userInfoForm.user_id > 0 ? `ユーザー: ${userInfoForm.user_name}` : '未ログイン'}</li>
             <li>
-              <Link to={LOGIN}>ログイン</Link>
+              <Link to={TODO}>トップページ</Link>
             </li>
-          )}
-          {userInfoForm.user_id > 0 ? (
-            <li>
-              <LogoutButton />
-            </li>
-          ) : (
-            ''
-          )}
-        </ul>
-      </nav>
-    </header>
+            {userInfoForm.user_id >= 1 ? (
+              ''
+            ) : (
+              <li>
+                <Link to={LOGIN}>ログイン</Link>
+              </li>
+            )}
+            {userInfoForm.user_id > 0 ? (
+              <li>
+                <LogoutButton />
+              </li>
+            ) : (
+              ''
+            )}
+          </ul>
+        </nav>
+      </header>
+    </div>
   );
 };
