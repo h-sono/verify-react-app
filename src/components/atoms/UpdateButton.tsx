@@ -15,7 +15,6 @@ export interface UpdateButtonInfo {
   applType: string;
 }
 
-// TODO:user_idとtodo_idを持ってくる
 export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
   const { todo_id = 0, todo = '', date = '', pagePath, applType } = props;
   // ページ遷移で使用するナビゲーションの宣言。

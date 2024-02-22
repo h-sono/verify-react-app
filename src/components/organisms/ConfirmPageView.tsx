@@ -2,6 +2,7 @@ import React from 'react';
 import { InputTextField } from '../molecules/InputTextField.tsx';
 import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
+import { Header } from '../atoms/Header.tsx';
 
 export interface ConfirmPageViewProps {
   confirmItemNameList: ResistrationTypeDisplayProps;
@@ -16,6 +17,7 @@ export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
 
   return (
     <div>
+      <Header />
       <p>{confirmItemNameList.title}</p>
       <br />
       <InputTextField

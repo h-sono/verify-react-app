@@ -10,6 +10,7 @@ import { GetTodoListResProps } from '../callApi/GetTodoList.tsx';
 import { UserInfoContext } from '../hook/CommonUseContext.tsx';
 import { UserInfoForm } from '../const/Form.tsx';
 import { TodoForm } from '../const/Form.tsx';
+import { Header } from '../atoms/Header.tsx';
 
 // 一覧画面のロジックコンポーネント
 export const TopPage: React.FC = () => {
@@ -65,12 +66,23 @@ export const TopPage: React.FC = () => {
   }, [userInfoForm.user_id]);
 
   return (
-    // コンテキストにユーザー情報を格納する。
-    // ※セッションストレージにユーザー情報が保存されているので本来不要だがサンプルとしてuseContextを使用。
-    <UserInfoContext.Provider
-      value={{ user_id: userInfoForm.user_id, user_name: userInfoForm.user_name, login_flg: userInfoForm.login_flg }}
-    >
-      <TopPageView todoList={todoList} />
-    </UserInfoContext.Provider>
+    <div>
+      <Header />
+      {userInfoForm.user_id > 0 ? (
+        // コンテキストにユーザー情報を格納する。
+        // ※セッションストレージにユーザー情報が保存されているので本来不要だがサンプルとしてuseContextを使用。
+        <UserInfoContext.Provider
+          value={{
+            user_id: userInfoForm.user_id,
+            user_name: userInfoForm.user_name,
+            login_flg: userInfoForm.login_flg
+          }}
+        >
+          <TopPageView todoList={todoList} />
+        </UserInfoContext.Provider>
+      ) : (
+        <div>ログインしてください。</div>
+      )}
+    </div>
   );
 };
