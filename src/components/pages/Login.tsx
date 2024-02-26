@@ -6,9 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { LOGIN, TODO } from '../const/RoutingPath.tsx';
 import { LoginResProps } from '../callApi/PostLogin.tsx';
 import { GetLogout } from '../callApi/GetLogout.tsx';
-import { SessionStorageSet } from '../utils/SessionStorageUtils.tsx';
+import { SessionStorageSet, SessionStorageAllClear } from '../utils/SessionStorageUtils.tsx';
 import { UserInfoForm } from '../const/Form.tsx';
-import { SessionStorageAllClear } from '../utils/SessionStorageUtils.tsx';
 
 export const Login: React.FC = () => {
   // ログイン画面でセッションストレージを全てクリアする(/api/todo/logout/を呼び出した時点でクリアされるが念のため)。

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { TODO, LOGIN, LOGOUT } from '../const/RoutingPath.tsx';
+import { TODO, LOGIN } from '../const/RoutingPath.tsx';
 import { SessionStorageItemGet, SessionStorageUserInfoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { UserInfoForm } from '../const/Form.tsx';
 import { LogoutButton } from '../atoms/LogoutButton.tsx';
