@@ -1,5 +1,5 @@
 import { UpdateButton } from '../../../components/atoms/UpdateButton.tsx';
-import { Modify, Delete } from '../../../components/const/RegistrationType.tsx';
+import { New, Modify, Delete } from '../../../components/const/RegistrationType.tsx';
 
 export default {
   title: 'UpdateButton',
@@ -7,6 +7,16 @@ export default {
   parameters: {},
   tags: ['autodocs'],
   argTypes: {}
+};
+
+export const UpdateButtonNewUi = {
+  args: {
+    todo: '',
+    todo_id: 0,
+    date: '',
+    pagePath: '',
+    applType: New
+  }
 };
 
 export const UpdateButtonModefyUi = {

@@ -8,6 +8,7 @@ import { LoginResProps } from '../callApi/PostLogin.tsx';
 import { GetLogout } from '../callApi/GetLogout.tsx';
 import { SessionStorageSet, SessionStorageAllClear } from '../utils/SessionStorageUtils.tsx';
 import { UserInfoForm } from '../const/Form.tsx';
+import { LoginContainer, LoginInput, LoginButton, LoginFailMsg } from '../style/LoginStyle.tsx';
 
 export const Login: React.FC = () => {
   // ログイン画面でセッションストレージを全てクリアする(/api/todo/logout/を呼び出した時点でクリアされるが念のため)。
@@ -68,10 +69,16 @@ export const Login: React.FC = () => {
   }, [login, navigate]);
 
   return (
-    <div>
-      <input type='text' placeholder='ユーザー名' value={username} onChange={e => setUsername(e.target.value)} />
-      <input type='password' placeholder='パスワード' value={password} onChange={e => setPassword(e.target.value)} />
-      <button onClick={handleSubmit}>ログイン</button>
-    </div>
+    <LoginContainer>
+      <LoginInput type='text' placeholder='ユーザー名' value={username} onChange={e => setUsername(e.target.value)} />
+      <LoginInput
+        type='password'
+        placeholder='パスワード'
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      />
+      <LoginButton onClick={handleSubmit}>ログイン</LoginButton>
+      {login.login_flg ? '' : <LoginFailMsg>ユーザー名またはパスワードが違います。</LoginFailMsg>}
+    </LoginContainer>
   );
 };

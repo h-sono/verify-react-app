@@ -3,6 +3,7 @@ import { InputTextField } from '../molecules/InputTextField.tsx';
 import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
 import { Header } from '../atoms/Header.tsx';
+import { ConfirmTitle, BackButton, ResisterButton, ButtonContainer } from '../style/ConfirmPageStyle.tsx';
 
 export interface ConfirmPageViewProps {
   confirmItemNameList: ResistrationTypeDisplayProps;
@@ -18,7 +19,7 @@ export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
   return (
     <div>
       <Header />
-      <p>{confirmItemNameList.title}</p>
+      <ConfirmTitle>{confirmItemNameList.title}</ConfirmTitle>
       <br />
       <InputTextField
         id={'Todo'}
@@ -27,8 +28,10 @@ export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
         inputProps={{ readOnly: true }}
       />
       <br />
-      <button onClick={handleSubmit}>登録</button>
-      <button onClick={handlePageBack}>戻る</button>
+      <ButtonContainer>
+        <BackButton onClick={handlePageBack}>戻る</BackButton>
+        <ResisterButton onClick={handleSubmit}>登録</ResisterButton>
+      </ButtonContainer>
     </div>
   );
 };

@@ -9,6 +9,7 @@ export const HeaderContainer = styled.header`
   background: #4169e1;
   display: inline-block;
   vertical-align: middle;
+  margin-bottom: 20px;
 `;
 
 // ヘッダーのロゴスタイル。
