@@ -1,9 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { TODO, LOGIN, LOGOUT } from '../const/RoutingPath.tsx';
+import { TODO, LOGIN } from '../const/RoutingPath.tsx';
 import { SessionStorageItemGet, SessionStorageUserInfoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { UserInfoForm } from '../const/Form.tsx';
 import { LogoutButton } from '../atoms/LogoutButton.tsx';
+import {
+  HeaderContainer,
+  HeaderLogo,
+  UserDisplay,
+  TopLink,
+  LoginLogoutBlock,
+  LoginLink
+} from '../style/HeaderStyle.tsx';
 
 export const Header: React.FC = () => {
   // セッションストレージのUserInfoFormから取得した値の状態管理。
@@ -26,32 +33,19 @@ export const Header: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h1 style={{ fontSize: '30px' }}>Todoアプリ</h1>
-      <header>
-        <nav>
-          <ul>
-            <li>{userInfoForm.user_id > 0 ? `ユーザー: ${userInfoForm.user_name}` : '未ログイン'}</li>
-            <li>
-              <Link to={TODO}>トップページ</Link>
-            </li>
-            {userInfoForm.user_id >= 1 ? (
-              ''
-            ) : (
-              <li>
-                <Link to={LOGIN}>ログイン</Link>
-              </li>
-            )}
-            {userInfoForm.user_id > 0 ? (
-              <li>
-                <LogoutButton />
-              </li>
-            ) : (
-              ''
-            )}
-          </ul>
-        </nav>
-      </header>
-    </div>
+    <HeaderContainer>
+      <HeaderLogo>Todoアプリ</HeaderLogo>
+      {userInfoForm.user_id >= 1 ? <TopLink to={TODO}>トップページ</TopLink> : ''}
+      <UserDisplay>{userInfoForm.user_id > 0 ? `ログインユーザー: ${userInfoForm.user_name}` : ''}</UserDisplay>
+      {userInfoForm.user_id >= 1 ? (
+        <LoginLogoutBlock>
+          <LogoutButton />
+        </LoginLogoutBlock>
+      ) : (
+        <LoginLogoutBlock>
+          <LoginLink to={LOGIN}>ログイン</LoginLink>
+        </LoginLogoutBlock>
+      )}
+    </HeaderContainer>
   );
 };

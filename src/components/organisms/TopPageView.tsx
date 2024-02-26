@@ -3,6 +3,8 @@ import { UpdateButton } from '../atoms/UpdateButton.tsx';
 import { INPUT } from '../const/RoutingPath.tsx';
 import { New } from '../const/RegistrationType.tsx';
 import { GetTodoListResProps } from '../callApi/GetTodoList.tsx';
+import { Table, TodoTh, DateTh, ButtonTh, TodoTd, DateTd, ButtonTd } from '../style/TopPageStyle.tsx';
+
 export interface TableList {
   todoList: GetTodoListResProps;
 }
@@ -14,18 +16,18 @@ export const TopPageView: React.FC<TableList> = props => {
     <div>
       {/* 新規ボタン */}
       <UpdateButton pagePath={INPUT} applType={New} />
-      <table>
+      <Table>
         <tr>
-          <th>Todo</th>
-          <th>登録日</th>
-          <th>更新</th>
+          <TodoTh>Todo</TodoTh>
+          <DateTh>登録日</DateTh>
+          <ButtonTh>更新</ButtonTh>
         </tr>
         {todoList.todo_list.map((item, index) => (
           <tr key={index}>
-            <td>{item.todo}</td>
-            <td>{item.update_date_time}</td>
-            {item.appltype.map((buttonItem, buttonItemIndex) => (
-              <td>
+            <TodoTd>{item.todo}</TodoTd>
+            <DateTd>{item.update_date_time}</DateTd>
+            <ButtonTd>
+              {item.appltype.map((buttonItem, buttonItemIndex) => (
                 <UpdateButton
                   todo_id={item.id}
                   todo={item.todo}
@@ -33,11 +35,11 @@ export const TopPageView: React.FC<TableList> = props => {
                   pagePath={INPUT}
                   applType={buttonItem}
                 />
-              </td>
-            ))}
+              ))}
+            </ButtonTd>
           </tr>
         ))}
-      </table>
+      </Table>
     </div>
   );
 };

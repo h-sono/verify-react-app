@@ -6,6 +6,7 @@ import { ConfirmPage } from '../pages/ConfirmPage.tsx';
 import { Login } from '../pages/Login.tsx';
 import { TODO, INPUT, CONFIRM, LOGIN } from '../const/RoutingPath.tsx';
 
+// src/index.tsxで呼び出している。
 export const Routing: React.FC = () => {
   return (
     <Router>

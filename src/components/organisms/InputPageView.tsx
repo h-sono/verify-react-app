@@ -3,6 +3,7 @@ import { InputTextField } from '../molecules/InputTextField.tsx';
 import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
 import { Header } from '../atoms/Header.tsx';
+import { InputTitle, BackButton, ConfirmButton, ButtonContainer } from '../style/InputPageStyle.tsx';
 
 export interface InputPageViewProps {
   inputItemNameList: ResistrationTypeDisplayProps;
@@ -19,7 +20,7 @@ export const InputPageView: React.FC<InputPageViewProps> = props => {
   return (
     <div>
       <Header />
-      <p>{inputItemNameList.title}</p>
+      <InputTitle>{inputItemNameList.title}</InputTitle>
       <br />
       <InputTextField
         id={'Todo'}
@@ -28,8 +29,10 @@ export const InputPageView: React.FC<InputPageViewProps> = props => {
         inputItemName={inputItemNameList.todoDisplay}
         handleInputChange={handleInputChange}
       />
-      <button onClick={handleConirm}>確認</button>
-      <button onClick={handlePageBack}>戻る</button>
+      <ButtonContainer>
+        <BackButton onClick={handlePageBack}>戻る</BackButton>
+        <ConfirmButton onClick={handleConirm}>確認</ConfirmButton>
+      </ButtonContainer>
     </div>
   );
 };

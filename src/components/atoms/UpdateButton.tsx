@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { TodoForm } from '../const/Form.tsx';
 import { SessionStorageSet } from '../utils/SessionStorageUtils.tsx';
 import { ResistrationTypeList } from '../const/RegistrationType.tsx';
-import { Delete } from '../const/RegistrationType.tsx';
+import { New, Modify, Delete } from '../const/RegistrationType.tsx';
 import { CONFIRM } from '../const/RoutingPath.tsx';
 import { UserInfoContext } from '../hook/CommonUseContext.tsx';
+import { ButtonContainer, NewButton, ModifyButton, DeleteButton } from '../style/UpdateButtonStyle.tsx';
 
 export interface UpdateButtonInfo {
   todo?: string;
@@ -50,9 +51,21 @@ export const UpdateButton: React.FC<UpdateButtonInfo> = props => {
     }
   };
 
-  return (
-    <div>
-      <button onClick={handleButtonClick}>{applTypeName}</button>
-    </div>
-  );
+  let Button: any;
+  switch (applType) {
+    case New:
+      Button = <NewButton onClick={handleButtonClick}>{applTypeName}</NewButton>;
+      break;
+    case Modify:
+      Button = <ModifyButton onClick={handleButtonClick}>{applTypeName}</ModifyButton>;
+      break;
+    case Delete:
+      Button = <DeleteButton onClick={handleButtonClick}>{applTypeName}</DeleteButton>;
+      break;
+    default:
+      Button = <p>※予想外の登録種別によりボタンが正常に表示されません。</p>;
+      break;
+  }
+
+  return <ButtonContainer>{Button}</ButtonContainer>;
 };

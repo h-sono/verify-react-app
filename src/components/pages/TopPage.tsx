@@ -11,6 +11,7 @@ import { UserInfoContext } from '../hook/CommonUseContext.tsx';
 import { UserInfoForm } from '../const/Form.tsx';
 import { TodoForm } from '../const/Form.tsx';
 import { Header } from '../atoms/Header.tsx';
+import { BodyComment } from '../style/TopPageStyle.tsx';
 
 // 一覧画面のロジックコンポーネント
 export const TopPage: React.FC = () => {
@@ -81,7 +82,7 @@ export const TopPage: React.FC = () => {
           <TopPageView todoList={todoList} />
         </UserInfoContext.Provider>
       ) : (
-        <div>ログインしてください。</div>
+        <BodyComment>ログインしてください。</BodyComment>
       )}
     </div>
   );

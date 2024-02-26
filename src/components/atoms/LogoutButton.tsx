@@ -2,6 +2,7 @@ import React from 'react';
 import { GetLogout } from '../callApi/GetLogout.tsx';
 import { useNavigate } from 'react-router-dom';
 import { LOGIN } from '../const/RoutingPath.tsx';
+import { LogoutButtonDisplay } from '../style/LogoutButtonStyle.tsx';
 
 export const LogoutButton: React.FC = () => {
   // ページ遷移で使用するナビゲーションの宣言。
@@ -14,9 +15,5 @@ export const LogoutButton: React.FC = () => {
     navigate(LOGIN);
   };
 
-  return (
-    <div>
-      <button onClick={handleButtonClick}>ログアウト</button>
-    </div>
-  );
+  return <LogoutButtonDisplay onClick={handleButtonClick}>ログアウト</LogoutButtonDisplay>;
 };
