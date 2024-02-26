@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+// Buttonタグを囲っているdivのスタイル。
 export const ButtonContainer = styled.div`
   display: inline;
   margin: 15px;
