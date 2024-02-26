@@ -31,7 +31,7 @@ mockAxios.onGet('/api/todo/1').reply(200, {
   todo_list: [
     {
       id: 1,
-      todo: 'テストtodo1',
+      todo: 'テストtodo1テストtodo1テストtodo1テストtodo1テストtodo1テストtodo1テストtodo1テストtodo1テストtodo1テストtodo1テストtodo1',
       appltype: ['M', 'D'],
       del_flg: false,
       update_date_time: '2024-02-01'
