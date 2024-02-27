@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_protect
+from todo_app.const import code
 
 @csrf_protect
 @api_view(["POST"])
@@ -22,11 +23,12 @@ def post(request):
                 "user_id": user.id,
                 "user_name": username,
                 "login_flg": True,
+                "code": ""
             },
             status=status.HTTP_200_OK,
         )
     else:
         logger.debug("failed login!")
         return Response(
-            {"login_flg": False}, status=status.HTTP_401_UNAUTHORIZED
+            {"login_flg": False, "code": code.E00001}, status=status.HTTP_401_UNAUTHORIZED
         )

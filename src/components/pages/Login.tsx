@@ -9,6 +9,7 @@ import { GetLogout } from '../callApi/GetLogout.tsx';
 import { SessionStorageSet, SessionStorageAllClear } from '../utils/SessionStorageUtils.tsx';
 import { UserInfoForm } from '../const/Form.tsx';
 import { LoginContainer, LoginInput, LoginButton, LoginFailMsg } from '../style/LoginStyle.tsx';
+import { E00001 } from '../const/Code.tsx';
 
 export const Login: React.FC = () => {
   // ログイン画面でセッションストレージを全てクリアする(/api/todo/logout/を呼び出した時点でクリアされるが念のため)。
@@ -22,7 +23,7 @@ export const Login: React.FC = () => {
   // ログインフォームで入力したパスワードの状態管理。
   const [password, setPassword] = React.useState<string>('');
   // /api/todo/login/から取得したログイン情報の状態管理。
-  const [login, setLogin] = React.useState<LoginResProps>({ user_id: 0, user_name: '', login_flg: false });
+  const [login, setLogin] = React.useState<LoginResProps>({ user_id: 0, user_name: '', login_flg: false, code: '' });
 
   // ログイン画面のURLを直接指定された場合などにセッションを終了するよう
   // ログアウトAPIを呼び出す(cookieのセッションIDが削除される=セッションが終了する)。
@@ -78,7 +79,7 @@ export const Login: React.FC = () => {
         onChange={e => setPassword(e.target.value)}
       />
       <LoginButton onClick={handleSubmit}>ログイン</LoginButton>
-      {login.login_flg ? '' : <LoginFailMsg>ユーザー名またはパスワードが違います。</LoginFailMsg>}
+      {login.code === E00001 ? <LoginFailMsg>ユーザー名またはパスワードが違います。</LoginFailMsg> : ''}
     </LoginContainer>
   );
 };
