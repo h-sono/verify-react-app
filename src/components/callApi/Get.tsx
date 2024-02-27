@@ -5,11 +5,14 @@ export const Get = async (url: string) => {
   await axios
     .get(url)
     .then((res: any) => {
+      // ステータスコード:200の時のレスポンスデータの取得。
       resData = res.data;
     })
     .catch(e => {
-      console.log('API通信に失敗しました。');
+      console.log('Get:APIの呼び出しでエラーが発生しました。');
       console.log(e);
+      // エラーの時のレスポンスデータを取得。
+      resData = e.response.data;
     });
   // Promise<object>を返却。
   return resData;

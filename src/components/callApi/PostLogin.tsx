@@ -9,6 +9,7 @@ export interface LoginResProps {
   user_id?: number;
   user_name?: string;
   login_flg: boolean;
+  code?: string;
 }
 
 export const PostLogin = (req: LoginProps, config: any) => {
