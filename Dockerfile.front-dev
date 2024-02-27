@@ -1,0 +1,31 @@
+FROM node:20.11.0-bullseye-slim AS react-build
+# NODE_ENVを定義。開発時はdev。
+ENV NODE_ENV=dev
+WORKDIR /app
+# ワークディレクトリappにpackage*.jsonをコピー。
+COPY package*.json ./
+# app配下でnpm install。
+RUN npm install
+# app配下にpublicディレクトリ作成。
+RUN mkdir public
+# ルートディレクトリのpublicディレクトリをapp配下のpublicディレクトリ配下にコピー。
+COPY public ./public
+# app配下にsrcディレクトリ作成。
+RUN mkdir src
+# ルートディレクトリのsrcディレクトリをapp配下のsrcディレクトリ配下にコピー。
+COPY src ./src
+# Reactの開発サーバを起動。
+CMD ["npm", "start"]
+
+# FROM nginx:stable-alpine3.17-slim
+# WORKDIR /app
+# COPY --from=react-build /app ./
+# # プロジェクトルートディレクトリのnginx.conf(Nginx設定ファイル)をdefault.confにコピー。
+# COPY nginx-dev.conf /etc/nginx/conf.d/default.conf
+# # bashをインストール(alpineに標準でインストールされていないため)。bashを実行できるようにするため。
+# RUN apk add --no-cache bash
+# # ポート80でNginxを公開。
+# EXPOSE 80
+# # コンテナ起動時にNginxをデーモン起動。
+# CMD ["nginx", "-g", "daemon off;"]
+
