@@ -14,6 +14,8 @@ COPY public ./public
 RUN mkdir src
 # ルートディレクトリのsrcディレクトリをapp配下のsrcディレクトリ配下にコピー。
 COPY src ./src
+# tsconfig.jsonをapp配下にコピー。
+COPY tsconfig.json ./
 # Reactアプリケーションをビルド(webpackでhtml/jsファイル等を生成)。buildディレクトリが生成される。
 RUN npm run build
 

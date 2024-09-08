@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_protect
 from todo_app.const import code
 
+
 @csrf_protect
 @api_view(["POST"])
 def post(request):

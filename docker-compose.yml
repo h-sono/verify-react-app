@@ -1,5 +1,8 @@
 version: '3'
 services:
+  # react-nginxは本番を想定した構成のReact・Nginxの構成。使用時はreact-devを
+  # コメントアウトする。Reactのソースコードをホットリロードできないので注意。
+  # ↓
   react-nginx:
     build:
       context: .
@@ -8,6 +11,18 @@ services:
       - '3000:80' # 3000番ポートからのアクセスを80番ポート(Nginx)に転送。
     depends_on:
       - django
+
+  # react-devは開発時に使用する。使用時はreact-nginxをコメントアウトする。
+  # Reactのソースコードをホットリロードできる。
+  # ↓
+  # react-dev:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.front-dev
+  #   ports:
+  #     - '3000:3000'
+  #   depends_on:
+  #     - django
 
   django:
     build:

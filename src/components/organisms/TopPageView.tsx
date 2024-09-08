@@ -1,9 +1,9 @@
 import React from 'react';
-import { UpdateButton } from '../atoms/UpdateButton.tsx';
-import { INPUT } from '../const/RoutingPath.tsx';
-import { New } from '../const/RegistrationType.tsx';
-import { GetTodoListResProps } from '../callApi/GetTodoList.tsx';
-import { Table, TodoTh, DateTh, ButtonTh, TodoTd, DateTd, ButtonTd } from '../style/TopPageStyle.tsx';
+import { UpdateButton } from '../atoms/UpdateButton';
+import { INPUT } from '../const/RoutingPath';
+import { New } from '../const/RegistrationType';
+import { GetTodoListResProps } from '../callApi/GetTodoList';
+import { Table, TodoTh, DateTh, ButtonTh, TodoTd, DateTd, ButtonTd } from '../style/TopPageStyle';
 
 export interface TableList {
   todoList: GetTodoListResProps;
@@ -19,7 +19,7 @@ export const TopPageView: React.FC<TableList> = props => {
       <Table>
         <tr>
           <TodoTh>Todo</TodoTh>
-          <DateTh>登録日</DateTh>
+          <DateTh>登録日時</DateTh>
           <ButtonTh>更新</ButtonTh>
         </tr>
         {todoList.todo_list.map((item, index) => (
@@ -27,7 +27,7 @@ export const TopPageView: React.FC<TableList> = props => {
             <TodoTd>{item.todo}</TodoTd>
             <DateTd>{item.update_date_time}</DateTd>
             <ButtonTd>
-              {item.appltype.map((buttonItem, buttonItemIndex) => (
+              {item.appltype.map((buttonItem, _) => (
                 <UpdateButton
                   todo_id={item.id}
                   todo={item.todo}

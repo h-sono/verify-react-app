@@ -1,4 +1,4 @@
-import { Get } from './Get.tsx';
+import { Get } from './Get';
 
 export interface GetTodoListProps {
   id: number;
@@ -12,8 +12,9 @@ export interface GetTodoListResProps {
   todo_list: GetTodoListProps[];
 }
 
+// Todoリスト取得API。
 export const getTodoList = (user_id?: number) => {
   // Nginxのlocation /api からDjangoの8000番ポートに転送する設定のためオリジンの指定は不要。
   // return Get(`http://localhost:8000/api/todo/${user_id}`);
-  return Get(`/api/todo/${user_id}`);
+  return Get<GetTodoListResProps>(`/api/todo/${user_id}`);
 };

@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from todo_app.models import Todo
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
+from datetime import datetime
 
 
 @csrf_protect
@@ -27,16 +28,22 @@ def post(request):
     todo_id = request.data.get("todo_id")
     user_id = request.data.get("user_id")
     todo = request.data.get("todo")
-    
+
     try:
         # Userテーブルを検索。
         user = User.objects.get(id=user_id)
 
         # Todoテーブルを検索。
-        get_todo = Todo.objects.get(id=todo_id, user_id=user.id, del_flg=False)
-        
+        get_todo = Todo.objects.get(
+            id=todo_id,
+            user_id=user.id,
+            del_flg=False
+        )
+
         # todoを更新。
         get_todo.todo = todo
+        get_todo.created_date_time = datetime.now()
+        get_todo.update_date_time = datetime.now()
         get_todo.save()
     except Exception as e:
         logger.debug("exception details of the update_todo.py: [%s]", e)

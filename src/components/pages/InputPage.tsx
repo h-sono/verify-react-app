@@ -1,15 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CONFIRM } from '../const/RoutingPath.tsx';
-import { TodoForm } from '../const/Form.tsx';
-import {
-  SessionStorageSet,
-  SessionStorageItemGet,
-  SessionStorageTodoFormProps
-} from '../utils/SessionStorageUtils.tsx';
-import { InputPageView } from '../organisms/InputPageView.tsx';
-import { New, Modify } from '../const/RegistrationType.tsx';
-import { TODO } from '../const/RoutingPath.tsx';
+import { CONFIRM } from '../const/RoutingPath';
+import { InputPageView } from '../organisms/InputPageView';
+import { New, Modify } from '../const/RegistrationType';
+import { TODO } from '../const/RoutingPath';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectTodoListInfo, setTodoListInfo, TodoListProps } from '../../store/TodoListInfoSlice';
 
 export interface ResistrationTypeDisplayProps {
   title: string;
@@ -22,8 +18,14 @@ export const InputPage: React.FC = () => {
   // ページ遷移で使用するナビゲーションの宣言。
   const navigate = useNavigate();
 
+  // reduxストアへの値のディスパッチ。
+  const dispatch = useDispatch();
+
+  // ユーザー情報を取得。
+  const todoListInfo = useSelector(selectTodoListInfo);
+
   // セッションストレージのTodoFormから取得した値の状態管理。
-  const [todoForm, setTodoForm] = React.useState<SessionStorageTodoFormProps>({
+  const [todoForm, setTodoForm] = React.useState<TodoListProps>({
     user_id: 0,
     todo_id: 0,
     todo: '',
@@ -31,23 +33,19 @@ export const InputPage: React.FC = () => {
     applType: ''
   });
 
-  // 入力ページ描画時にセッションストレージから値を取得。
+  // 特定のTodoリスト情報をセット。
   React.useEffect(() => {
-    const getFormData: SessionStorageTodoFormProps = SessionStorageItemGet(TodoForm);
-    // セッションストレージの値を入力フォームにセット。
-    if (getFormData) {
-      setTodoForm({
-        user_id: getFormData.user_id,
-        todo_id: getFormData.todo_id,
-        todo: getFormData.todo,
-        date: getFormData.date,
-        applType: getFormData.applType
-      });
-    }
-  }, []);
+    setTodoForm({
+      user_id: todoListInfo.user_id,
+      todo_id: todoListInfo.todo_id,
+      todo: todoListInfo.todo,
+      date: todoListInfo.date,
+      applType: todoListInfo.applType
+    });
+  }, [todoListInfo]);
 
   // 入力フォームの値が変更された時に実行。todoの内容だけ変更される。
-  const handleInputChange = e => {
+  const handleInputChange = (e: { target: { value: any } }) => {
     setTodoForm({
       user_id: todoForm.user_id,
       todo_id: todoForm.todo_id,
@@ -59,14 +57,16 @@ export const InputPage: React.FC = () => {
 
   // 確認ボタンが押下された時に実行。
   const handleConirm = () => {
-    // セッションストレージに入力したフォームの値をセット。
-    SessionStorageSet(TodoForm, {
-      user_id: todoForm.user_id,
-      todo_id: todoForm.todo_id,
-      todo: todoForm.todo,
-      date: todoForm.date,
-      applType: todoForm.applType
-    });
+    // 選択したTodoの情報をreduxストアに保存。
+    dispatch(
+      setTodoListInfo({
+        user_id: todoForm.user_id,
+        todo_id: todoForm.todo_id,
+        todo: todoForm.todo,
+        date: todoForm.date,
+        applType: todoForm.applType
+      })
+    );
     // 確認画面へ遷移。
     navigate(CONFIRM);
   };

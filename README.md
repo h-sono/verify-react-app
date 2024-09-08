@@ -2,9 +2,19 @@
 
 - https://github.com/h-sono/verify-react-app
 
+## 初回起動時にやること
+
+- コンテナイメージビルド、コンテナ起動：`docker-compose up --build`
+- django コンテナに接続：`docker-compose exec django bash`
+  - マイグレート：`python manage.py migrate`
+  - 管理画面にログインするための管理者ユーザーを作成。こちらのユーザーアカウントを作成すると auth_user テーブルに管理者ユーザーが登録される。`http://localhost:3000/login`でログインするときに管理者ユーザーでログインできる。
+    ⇒`python manage.py createsuperuser`
+  - コンテナ再起動。
+
 ## ログインページのパス
 
-- `http://localhost:3000/todo/login/`
+- `http://localhost:3000/login/`
+- django の管理者ユーザーでログイン可能。
 
 ## Django REST Flamework 側のパス
 
@@ -145,30 +155,37 @@ react2:
   ⇒react-scripts に実行権限を与える。verify-react-app ディレクトリで`chmod +x node_modules/.bin/react-scripts`実行。
 
 ### テーブルデータ
-- 以下、todoテーブルにデータを挿入するときの例。
+
+- 以下、todo テーブルにデータを挿入するときの例。
+
 ```sql
-INSERT INTO todo (id, created_date_time, update_date_time, del_flg, todo, appltype, user_id) VALUES (1, NOW(), NOW(), false, 'テストtodo1', '["M", "C"]', 1);
+INSERT INTO todo (id, created_date_time, update_date_time, del_flg, todo, appltype, user_id) VALUES (1, NOW(), NOW(), false, 'テストtodo1', '["M", "D"]', 1);
 ```
-- テーブルデータをjson形式でダンプする(Dockerは起動しておく)。
+
+- テーブルデータを json 形式でダンプする(Docker は起動しておく)。
+
 ```bash
 $ docker-compose exec django bash
 $ python manage.py dumpdata --indent 4 > dumpdata.json
 ```
-- json形式でダンプしておいたテーブルデータをロードする(Dockerは起動しておく)。
+
+- json 形式でダンプしておいたテーブルデータをロードする(Docker は起動しておく)。
+
 ```bash
 $ docker-compose exec django bash
 # 以下コマンドを実行するディレクトリにあらかじめロードしたいjsonファイルを配置しておく。
 $ python manage.py loaddata dumpdata.json
 ```
 
-## Reactをビルドせず開発サーバーで起動してDjango側のAPIを呼び出す
-- `docker-compose.yml`のサービス：`react-nginx`は`npm run build`で生成したhtml/jsファイル
-をNginxで配信してブラウザに描画している。よって、ビルド後にReact側のソースを変更しても変更が
-反映されない。
+## React をビルドせず開発サーバーで起動して Django 側の API を呼び出す
+
+- `docker-compose.yml`のサービス：`react-nginx`は`npm run build`で生成した html/js ファイル
+  を Nginx で配信してブラウザに描画している。よって、ビルド後に React 側のソースを変更しても変更が
+  反映されない。
 - 開発時は即時変更を反映させたいので以下のようにする。
-  - `docker-compose.yml`のサービス：`react-nginx`をコメントアウトしてから`docker-compose up -d`などでDockerを起動。
-  - 別ターミナルで`npm run start`を実行し、Reactの開発サーバーを起動。
-  - ReactのAPI呼び出しコンポーネントを以下のように一時的に修正してDjango側のAPIにアクセスできるようにする。以下は/src/components/callApi/GetTodoList.tsxの例。
+  - `docker-compose.yml`のサービス：`react-nginx`をコメントアウトしてから`docker-compose up -d`などで Docker を起動。
+  - 別ターミナルで`npm run start`を実行し、React の開発サーバーを起動。
+  - React の API 呼び出しコンポーネントを以下のように一時的に修正して Django 側の API にアクセスできるようにする。以下は/src/components/callApi/GetTodoList.tsx の例。
   ```typescript
   export const getTodoList = (user_id?: number) => {
     // return Get(`/api/todo/${user_id}`);

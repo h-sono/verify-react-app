@@ -1,4 +1,4 @@
-import { Get } from './Get.tsx';
+import { Get } from './Get';
 
 export const GetCsrfToken = () => {
   // Nginxのlocation /api からDjangoの8000番ポートに転送する設定のためオリジンの指定は不要。

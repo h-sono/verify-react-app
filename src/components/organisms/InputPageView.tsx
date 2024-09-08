@@ -1,9 +1,9 @@
 import React from 'react';
-import { InputTextField } from '../molecules/InputTextField.tsx';
-import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
-import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
-import { Header } from '../atoms/Header.tsx';
-import { InputTitle, BackButton, ConfirmButton, ButtonContainer } from '../style/InputPageStyle.tsx';
+import { InputTextField } from '../molecules/InputTextField';
+import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils';
+import { ResistrationTypeDisplayProps } from '../pages/InputPage';
+import { Header } from '../atoms/Header';
+import { InputTitle, BackButton, ConfirmButton, ButtonContainer } from '../style/InputPageStyle';
 
 export interface InputPageViewProps {
   inputItemNameList: ResistrationTypeDisplayProps;

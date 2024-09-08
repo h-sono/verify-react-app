@@ -1,6 +1,5 @@
 import React from 'react';
-import { TextField } from '@mui/material';
-import { InputTitle, StyledTextField } from '../style/InputTextFieldStyle.tsx';
+import { InputTitle, StyledTextField } from '../style/InputTextFieldStyle';
 
 export interface InputTextFieldProps {
   inputItemName: string;
