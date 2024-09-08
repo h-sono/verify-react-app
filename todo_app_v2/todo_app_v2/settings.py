@@ -130,7 +130,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# デフォルトのタイムゾーンをJSTに設定。
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -178,7 +179,7 @@ SESSION_COOKIE_AGE = 3600
 CSRF_COOKIE_AGE = 3600
 
 # cookieのCSRFトークンのキー名を定義。
-CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_COOKIE_NAME = 'todoapp-csrftoken'
 
 # CSRF検証時に信頼できるオリジンを定義。
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]

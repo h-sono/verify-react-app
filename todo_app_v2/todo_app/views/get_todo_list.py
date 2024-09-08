@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -28,8 +29,10 @@ def get(request, user_id):
         )
 
         # update_date_timeをdatetimeからstringに変換。
+        # ※timezone.localtimeでsettings.pyのTIME_ZONEで設定しているタイムゾーンの時間に変換できる。
         for item in todos:
-            item["update_date_time"] = item["update_date_time"].strftime("%Y-%m-%d")
+            item["update_date_time"] = timezone.localtime(
+                item["update_date_time"]).strftime("%Y-%m-%d %H:%M:%S")
     except Exception:
         return Response({"error_flg": True}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

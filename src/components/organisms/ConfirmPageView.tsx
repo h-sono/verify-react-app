@@ -1,13 +1,20 @@
 import React from 'react';
-import { InputTextField } from '../molecules/InputTextField.tsx';
-import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
-import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
-import { Header } from '../atoms/Header.tsx';
-import { ConfirmTitle, BackButton, ResisterButton, ButtonContainer } from '../style/ConfirmPageStyle.tsx';
+import { InputTextField } from '../molecules/InputTextField';
+import { ResistrationTypeDisplayProps } from '../pages/InputPage';
+import { Header } from '../atoms/Header';
+import { ConfirmTitle, BackButton, ResisterButton, ButtonContainer } from '../style/ConfirmPageStyle';
+
+export interface TodoForm {
+  user_id: number;
+  todo_id: number;
+  todo: string;
+  date: string;
+  applType: string;
+}
 
 export interface ConfirmPageViewProps {
   confirmItemNameList: ResistrationTypeDisplayProps;
-  todoForm: SessionStorageTodoFormProps;
+  todoForm: TodoForm;
   handleSubmit: () => void;
   handlePageBack: () => void;
 }
@@ -30,7 +37,7 @@ export const ConfirmPageView: React.FC<ConfirmPageViewProps> = props => {
       <br />
       <ButtonContainer>
         <BackButton onClick={handlePageBack}>戻る</BackButton>
-        <ResisterButton onClick={handleSubmit}>登録</ResisterButton>
+        <ResisterButton onClick={handleSubmit}>{todoForm.applType === 'D' ? '削除' : '登録'}</ResisterButton>
       </ButtonContainer>
     </div>
   );

@@ -1,59 +1,40 @@
 import React from 'react';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import { SessionStorageItemGet } from '../utils/SessionStorageUtils.tsx';
-import { TodoForm } from '../const/Form.tsx';
-import { SessionStorageTodoFormProps } from '../utils/SessionStorageUtils.tsx';
-import { ResistrationTypeDisplayProps } from '../pages/InputPage.tsx';
-import { New, Modify, Delete } from '../const/RegistrationType.tsx';
-import { ConfirmPageView } from '../organisms/ConfirmPageView.tsx';
-import { TODO, INPUT } from '../const/RoutingPath.tsx';
-import { AddTodo, AddTodoResProps } from '../callApi/AddTodo.tsx';
-import { UpdateTodo, UpdateTodoResProps } from '../callApi/UpdateTodo.tsx';
-import { DeleteTodo, DeleteTodoResProps } from '../callApi/DeleteTodo.tsx';
+import { ResistrationTypeDisplayProps } from '../pages/InputPage';
+import { New, Modify, Delete } from '../const/RegistrationType';
+import { ConfirmPageView } from '../organisms/ConfirmPageView';
+import { TODO, INPUT } from '../const/RoutingPath';
+import { AddTodoResProps } from '../callApi/AddTodo';
+import { UpdateTodoResProps } from '../callApi/UpdateTodo';
+import { DeleteTodoResProps } from '../callApi/DeleteTodo';
+import { selectTodoListInfo } from '../../store/TodoListInfoSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { HeaderProps } from '../const/HeaderInfo';
+import { callAddTodo } from '../callApi/callApiPromise/CallAddTodo';
+import { callDeleteTodo } from '../callApi/callApiPromise/CallDeleteTodo';
+import { callUpdateTodo } from '../callApi/callApiPromise/CallUpdateTodo';
+import { setTodoInfo } from '../../store/AddTodoSlice';
+import { setUpdateTodoInfo } from '../../store/UpdateTodoSlice';
+import { setDeleteTodoInfo } from '../../store/DeleteTodoSlice';
+import Cookies from 'js-cookie';
 
 // 確認画面のロジックコンポーネント
 export const ConfirmPage: React.FC = () => {
   // ページ遷移で使用するナビゲーションの宣言。
   const navigate = useNavigate();
-  // セッションストレージのTodoFormから取得した値の状態管理。
-  const [storageTodoFormData, setStorageTodoFormData] = React.useState<SessionStorageTodoFormProps>({
-    user_id: 0,
-    todo_id: 0,
-    todo: '',
-    date: '',
-    applType: ''
-  });
-  // TODO:返却値を使わない場合は不要。/api/add_todo/の返却値を管理。
-  const [addTodoRes, setAddTodoRes] = React.useState<AddTodoResProps>({ id: 0, error_flg: false });
-  console.log('add_todo.pyの返却値: ' + addTodoRes);
-  // TODO:返却値を使わない場合は不要。/api/add_todo/の返却値を管理。
-  const [updateTodoRes, setUpdateTodoRes] = React.useState<UpdateTodoResProps>({ id: 0, error_flg: false });
-  console.log('update_todo.pyの返却値: ' + updateTodoRes);
-  // TODO:返却値を使わない場合は不要。/api/add_todo/の返却値を管理。
-  const [deleteTodoRes, setDeleteTodoRes] = React.useState<DeleteTodoResProps>({ id: 0, error_flg: false });
-  console.log('delete_todo.pyの返却値: ' + deleteTodoRes);
 
-  // 確認ページ描画時にセッションストレージから値を取得。
-  React.useEffect(() => {
-    const getFormData: SessionStorageTodoFormProps = SessionStorageItemGet(TodoForm);
-    if (getFormData) {
-      setStorageTodoFormData({
-        user_id: getFormData.user_id,
-        todo_id: getFormData.todo_id,
-        todo: getFormData.todo,
-        date: getFormData.date,
-        applType: getFormData.applType
-      });
-    }
-  }, []);
+  // reduxストアへの値のディスパッチ。
+  const dispatch = useDispatch();
+
+  // ユーザー情報を取得。
+  const todoListInfo = useSelector(selectTodoListInfo);
 
   // 登録種別によって確認画面の表示内容を切り替える。
   let confirmItemName: ResistrationTypeDisplayProps = {
     title: '',
     todoDisplay: ''
   };
-  switch (storageTodoFormData.applType) {
+  switch (todoListInfo.applType) {
     case New:
       confirmItemName = {
         title: '新規確認画面',
@@ -81,62 +62,65 @@ export const ConfirmPage: React.FC = () => {
 
   // 登録ボタンを押下したときのアクション。
   const handleSubmit = () => {
-    if (storageTodoFormData.applType === New) {
-      // 新規登録の場合は/api/add_todo/を呼び出す。
-      AddTodo(
-        { user_id: storageTodoFormData.user_id, todo: storageTodoFormData.todo },
+    if (todoListInfo.applType === New) {
+      // Todo新規登録API実行。
+      callAddTodo(
+        todoListInfo.user_id,
+        todoListInfo.todo,
         {
           headers: {
             // POST時にCSRFトークン検証をするためヘッダーで送信。
-            'X-CSRFToken': Cookies.get('csrftoken'),
+            'X-CSRFToken': Cookies.get('todoapp-csrftoken'),
             'Content-Type': 'application/json'
-          }
-        }
-      ).then((data: any) => {
-        if (data.error_flg) {
-          // TODO:エラーを出す。暫時入力画面に戻る。
-          navigate(INPUT);
-        } else {
-          setAddTodoRes(data);
-        }
+          } as HeaderProps
+        },
+        navigate
+      ).then(data => {
+        const resData = data as AddTodoResProps;
+
+        // 返却値をセット。
+        dispatch(setTodoInfo(resData));
       });
-    } else if (storageTodoFormData.applType === Modify) {
-      // 変更登録の場合は/api/update_todo/を呼び出す。
-      UpdateTodo(
-        { todo_id: storageTodoFormData.todo_id, user_id: storageTodoFormData.user_id, todo: storageTodoFormData.todo },
+    } else if (todoListInfo.applType === Modify) {
+      // Todo更新API実行。
+      callUpdateTodo(
+        todoListInfo.todo_id,
+        todoListInfo.user_id,
+        todoListInfo.todo,
         {
           headers: {
             // POST時にCSRFトークン検証をするためヘッダーで送信。
-            'X-CSRFToken': Cookies.get('csrftoken'),
+            'X-CSRFToken': Cookies.get('todoapp-csrftoken'),
             'Content-Type': 'application/json'
-          }
-        }
-      ).then((data: any) => {
-        if (data.error_flg) {
-          // TODO:エラーを出す。暫時入力画面に戻る。
-          navigate(INPUT);
-        } else {
-          setUpdateTodoRes(data);
-        }
+          } as HeaderProps
+        },
+        navigate
+      ).then(data => {
+        // 返却値。
+        const resData = data as UpdateTodoResProps;
+
+        // 返却値をセット。
+        dispatch(setUpdateTodoInfo(resData));
       });
     } else {
-      // 削除の場合は/api/delete_todo/を呼び出す。
-      DeleteTodo(
-        { todo_id: storageTodoFormData.todo_id, user_id: storageTodoFormData.user_id },
+      // Todo削除API実行。
+      callDeleteTodo(
+        todoListInfo.todo_id,
+        todoListInfo.user_id,
         {
           headers: {
             // POST時にCSRFトークン検証をするためヘッダーで送信。
-            'X-CSRFToken': Cookies.get('csrftoken'),
+            'X-CSRFToken': Cookies.get('todoapp-csrftoken'),
             'Content-Type': 'application/json'
-          }
-        }
-      ).then((data: any) => {
-        if (data.error_flg) {
-          // TODO:エラーを出す。暫時入力画面に戻る。
-          navigate(INPUT);
-        } else {
-          setDeleteTodoRes(data);
-        }
+          } as HeaderProps
+        },
+        navigate
+      ).then(data => {
+        // 返却値。
+        const resData = data as DeleteTodoResProps;
+
+        // 返却値をセット。
+        dispatch(setDeleteTodoInfo(resData));
       });
     }
     // 新規・変更・解約処理後はトップページに戻る。
@@ -146,7 +130,7 @@ export const ConfirmPage: React.FC = () => {
   // 戻るボタン押下時。
   const handlePageBack = () => {
     // 削除以外は入力画面に戻り、削除の場合はトップ画面に戻る。
-    if (storageTodoFormData.applType !== Delete) {
+    if (todoListInfo.applType !== Delete) {
       navigate(INPUT);
     } else {
       navigate(TODO);
@@ -156,7 +140,7 @@ export const ConfirmPage: React.FC = () => {
   return (
     <ConfirmPageView
       confirmItemNameList={confirmItemName}
-      todoForm={storageTodoFormData}
+      todoForm={todoListInfo}
       handleSubmit={handleSubmit}
       handlePageBack={handlePageBack}
     />

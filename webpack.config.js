@@ -1,4 +1,3 @@
-// ※npm run buildでwebpackしているため使用していない。npm run webpack(カスタムwebpack)する際に使用する。
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -16,6 +15,13 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'src/webpack/')
     // filename: 'bundle-by-webpack.js'
+  },
+	resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],  // 解決するファイル拡張子
+    alias: {
+      '@components': path.resolve(__dirname, 'src/components/*'),
+      '@store': path.resolve(__dirname, 'src/store/*')
+    }
   },
   module: {
     rules: [

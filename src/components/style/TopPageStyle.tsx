@@ -20,7 +20,7 @@ export const TodoTh = styled.th`
   padding: 10px 0;
 `;
 
-// thタグ：「登録日」列のスタイル。
+// thタグ：「登録日時」列のスタイル。
 export const DateTh = styled.th`
   text-align: center;
   color: white;
@@ -57,7 +57,7 @@ export const TodoTd = styled.td`
   padding: 10px 0;
 `;
 
-// tdタグ：「登録日」列のスタイル。
+// tdタグ：「登録日時」列のスタイル。
 export const DateTd = styled.td`
   text-align: center;
   border-left: 1px solid #a8b7c5;

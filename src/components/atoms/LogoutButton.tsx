@@ -1,8 +1,8 @@
 import React from 'react';
-import { GetLogout } from '../callApi/GetLogout.tsx';
+import { GetLogout } from '../callApi/GetLogout';
 import { useNavigate } from 'react-router-dom';
-import { LOGIN } from '../const/RoutingPath.tsx';
-import { LogoutButtonDisplay } from '../style/LogoutButtonStyle.tsx';
+import { LOGIN } from '../const/RoutingPath';
+import { LogoutButtonDisplay } from '../style/LogoutButtonStyle';
 
 export const LogoutButton: React.FC = () => {
   // ページ遷移で使用するナビゲーションの宣言。
